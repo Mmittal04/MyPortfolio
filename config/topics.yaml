@@ -15,12 +15,27 @@ topics:
       - https://techcrunch.com/feed/
       - https://www.theverge.com/rss/index.xml
       - https://feeds.arstechnica.com/arstechnica/index
-      - https://hnrss.org/frontpage
-      - https://behavioralscientist.org/feed/
-      - https://yourstory.com/feed
-      - https://www.bloomberg.com/feeds/technology/news.rss
       - https://www.wired.com/feed/category/business/latest/rss
-      - https://www.uktech.news/feed
+      - https://entrackr.com/rss
+      - https://inc42.com/feed/
+      # Additional Indian-tech sources checked (23-08-26): Analytics India
+      # Magazine (analyticsindiamag.com/feed) and MediaNama (medianama.com/feed)
+      # both returned empty/broken from here; Digit.in (digit.in/feed) works
+      # but its all-categories feed mixes Hindi and English and skews toward
+      # product-discount posts rather than editorial coverage, not added.
+      #
+      # Dropped after reviewing real sample output (23-08-26):
+      # - hnrss.org/frontpage: mixed off-topic personal essays/culture pieces
+      #   in with the tech content, and hnrss's description field never
+      #   carries real article text, so keyword filtering can't reach it.
+      # - behavioralscientist.org: not technology (behavioral science essays).
+      # - yourstory.com: PR/event-announcement flavoured, plus a bloated
+      #   full-HTML feed. Replaced with entrackr.com/rss for Indian startup
+      #   coverage instead, real funding/DRHP/financial reporting.
+      # - bloomberg.com/feeds/technology/news.rss: feed appears discontinued;
+      #   no working public RSS endpoint found for Bloomberg Technology.
+      # - uktech.news/feed: legitimate site with real content, but no
+      #   working feed URL found after trying the common WordPress paths.
     keywords:
       - startups
       - ai
@@ -31,28 +46,5 @@ topics:
       - research
       - data
 
-  # Priority topic for Maan, left inactive until the feed list below is
-  # reviewed. Source selection matters more here than for the other two:
-  # this should draw from a spread of mainstream/wire and specialist
-  # health-policy and legal-tracking outlets rather than one advocacy angle,
-  # so the digest reflects what's being reported rather than a single framing.
-  # Replace/expand this list before flipping active to true.
-  - slug: trans-rights-healthcare
-    name: "Gender-Affirming Care & Transgender Rights"
-    active: false
-    feeds:
-      - https://www.reuters.com/arc/outboundfeeds/rss/category/world/
-      - https://apnews.com/hub/transgender-people.rss
-    keywords:
-      - transgender
-      - gender-affirming care
-      - trans rights
-      - gender identity
-
-  - slug: energy-climate
-    name: "Energy & Climate Change"
-    active: false
-    feeds:
-      - https://insideclimatenews.org/feed/
-      - https://www.carbonbrief.org/feed
-    keywords: []
+# Gender-affirming care/transgender rights and Energy & Climate topics
+# removed for now, to be rebuilt with a proper feed-list review later.

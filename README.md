@@ -129,8 +129,12 @@ than a single advocacy angle) than for the other two.
 - `data/digest.db` is committed straight to the repo for simplicity. Fine
   at this scale; if the DB grows large, moving it out of git (e.g. an
   Actions artifact or external volume) would be the next step.
-- No retry/backoff on individual failed API calls yet, just a fallback
-  placeholder so one bad article doesn't kill the whole batch.
+- Each article's Gemini call retries once if the API returns a genuinely
+  empty response (a known free-tier quirk, no error, just no text), then
+  gives up and logs the real reason (blocked prompt, empty response with
+  its `finish_reason`, etc.) to stderr rather than silently storing a blank
+  summary. If a batch shows empty summaries across the board, check the
+  Actions run log for these `! summarisation failed for ...` lines first.
 - `--max-articles` caps each topic to 20 new articles summarised per run by
   default, to stay well within the free-tier daily request quota on a busy
   day. Anything past the cap is still stored as a stub and picked up first

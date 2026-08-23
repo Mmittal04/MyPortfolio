@@ -1,0 +1,58 @@
+# One entry per topic. Adding a new topic later means adding an entry here,
+# not touching the pipeline code.
+#
+# active:   whether main.py should process this topic on a given run
+# feeds:    RSS/Atom feed URLs to poll
+# keywords: optional lowercase substrings; if non-empty, an entry is only kept
+#           when the title+summary contains at least one of them (leave empty
+#           to keep everything from the feed)
+
+topics:
+  - slug: technology
+    name: "Technology"
+    active: true
+    feeds:
+      - https://techcrunch.com/feed/
+      - https://www.theverge.com/rss/index.xml
+      - https://feeds.arstechnica.com/arstechnica/index
+      - https://hnrss.org/frontpage
+      - https://behavioralscientist.org/feed/
+      - https://yourstory.com/feed
+      - https://www.bloomberg.com/feeds/technology/news.rss
+      - https://www.wired.com/feed/category/business/latest/rss
+      - https://www.uktech.news/feed
+    keywords:
+      - startups
+      - ai
+      - consumers
+      - product
+      - users
+      - technology
+      - research
+      - data
+
+  # Priority topic for Maan, left inactive until the feed list below is
+  # reviewed. Source selection matters more here than for the other two:
+  # this should draw from a spread of mainstream/wire and specialist
+  # health-policy and legal-tracking outlets rather than one advocacy angle,
+  # so the digest reflects what's being reported rather than a single framing.
+  # Replace/expand this list before flipping active to true.
+  - slug: trans-rights-healthcare
+    name: "Gender-Affirming Care & Transgender Rights"
+    active: false
+    feeds:
+      - https://www.reuters.com/arc/outboundfeeds/rss/category/world/
+      - https://apnews.com/hub/transgender-people.rss
+    keywords:
+      - transgender
+      - gender-affirming care
+      - trans rights
+      - gender identity
+
+  - slug: energy-climate
+    name: "Energy & Climate Change"
+    active: false
+    feeds:
+      - https://insideclimatenews.org/feed/
+      - https://www.carbonbrief.org/feed
+    keywords: []

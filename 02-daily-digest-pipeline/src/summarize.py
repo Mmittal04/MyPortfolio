@@ -11,6 +11,7 @@ pipeline may run against up to three topics a day.
 """
 
 import json
+import time
 
 DEFAULT_MODEL = "gemini-2.5-flash-lite"
 
@@ -57,7 +58,7 @@ def _dry_run_summary(title, raw_excerpt):
     }
 
 
-def summarize_article(title, raw_excerpt, dry_run=False, model=DEFAULT_MODEL, client=None):
+def summarize_article(title, raw_excerpt, dry_run=False, model=DEFAULT_MODEL, client=None, max_attempts=2):
     if dry_run:
         return _dry_run_summary(title, raw_excerpt)
 
@@ -69,20 +70,40 @@ def summarize_article(title, raw_excerpt, dry_run=False, model=DEFAULT_MODEL, cl
     from google.genai import types
 
     prompt = PROMPT_TEMPLATE.format(title=title, excerpt=(raw_excerpt or "")[:2000])
-    response = client.models.generate_content(
-        model=model,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=RESPONSE_SCHEMA,
-        ),
+    config = types.GenerateContentConfig(
+        response_mime_type="application/json",
+        response_schema=RESPONSE_SCHEMA,
     )
 
-    try:
-        return json.loads(response.text)
-    except (json.JSONDecodeError, AttributeError, TypeError):
-        # Malformed/empty response from one article shouldn't crash the
-        # batch; fall back to storing whatever text came back with no
-        # structured data.
-        fallback_text = getattr(response, "text", None) or ""
-        return {"summary": fallback_text[:500], "entities": [], "themes": []}
+    last_failure = None
+    for attempt in range(1, max_attempts + 1):
+        response = client.models.generate_content(model=model, contents=prompt, config=config)
+
+        # A blocked prompt is reported via prompt_feedback rather than an
+        # exception, and won't succeed on retry, so fail immediately with
+        # the real reason instead of masking it as an empty summary.
+        block_reason = getattr(getattr(response, "prompt_feedback", None), "block_reason", None)
+        if block_reason:
+            raise RuntimeError(f"Gemini blocked the prompt for {title!r}: {block_reason}")
+
+        text = getattr(response, "text", None)
+        if text:
+            try:
+                return json.loads(text)
+            except json.JSONDecodeError:
+                # Valid response, but not valid JSON; store the raw text
+                # rather than losing it, with no structured data.
+                return {"summary": text[:500], "entities": [], "themes": []}
+
+        # No block reason and no text: a known free-tier quirk where the
+        # API returns a genuinely empty response. Often clears on retry.
+        candidates = getattr(response, "candidates", None) or []
+        finish_reason = getattr(candidates[0], "finish_reason", None) if candidates else None
+        last_failure = finish_reason
+        if attempt < max_attempts:
+            time.sleep(2)
+
+    raise RuntimeError(
+        f"Gemini returned an empty response for {title!r} after {max_attempts} attempt(s) "
+        f"(finish_reason={last_failure})"
+    )

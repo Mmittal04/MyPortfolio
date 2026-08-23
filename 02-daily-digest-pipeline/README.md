@@ -28,7 +28,8 @@ the comments in `config/topics.yaml` for what was dropped and why.
 ```
 config/topics.yaml     topic definitions: feeds, keyword filters, active flag
 src/ingest.py          fetches + dedupes new articles per topic
-src/summarize.py       one structured Gemini API call per article
+src/rank.py            one Gemini call to pick the top N candidates before summarising
+src/summarize.py       one structured Gemini API call per selected article
 src/store.py           SQLite schema and read/write helpers
 src/digest.py          renders the day's articles into Markdown
 src/main.py            orchestrator (the entry point)
@@ -36,6 +37,24 @@ data/digest.db         SQLite database (created on first run)
 digests/<slug>/<date>.md   daily output per topic
 .github/workflows/daily-digest.yml   cron schedule + commit-back
 ```
+
+## Ranking
+
+Before this existed, "top 10" meant the first 10 articles encountered
+across feeds in listing order, not a quality signal. Now every run pools
+all pending candidates (new entries plus anything left over from previous
+runs, capped at 60) and makes one Gemini call asking it to pick the top N
+worth reading, prioritising genuine news significance and original
+reporting over PR/announcement posts, listicles, and near-duplicate
+coverage of the same event. Only the selected ones get a full
+summarisation call; everything else is marked `rejected` in the database
+so it's never re-considered or shown, rather than sitting in an endless
+retry queue. If ranking itself fails for any reason, it falls back to the
+first N candidates unranked rather than blocking the run.
+
+Each article's status in the `articles` table is one of `pending` (seen,
+not yet judged), `summarized` (selected and summarised, shown in the
+digest), or `rejected` (considered and ranked out, never shown again).
 
 ## Local setup
 
@@ -139,12 +158,18 @@ Technology feed list was reviewed (see `config/topics.yaml` comments).
   its `finish_reason`, etc.) to stderr rather than silently storing a blank
   summary. If a batch shows empty summaries across the board, check the
   Actions run log for these `! summarisation failed for ...` lines first.
-- `--max-articles` caps the topic to the top 10 new articles summarised per
-  run by default ("top" meaning first-encountered across feeds in the order
-  they're listed in `config/topics.yaml`, not ranked by any quality signal
-  yet). Anything past the cap is still stored as a stub and picked up first
-  on the next run (`store.get_unsummarized`), so a busy day's backlog
-  clears over subsequent runs rather than being silently dropped.
+- `--max-articles` sets N for ranking (default 10): the number of articles
+  `rank.py` selects out of the pending pool each run, see "Ranking" above.
+  Rejected candidates are marked as such immediately rather than retried,
+  so a large backlog clears in one run rather than trickling through over
+  several days.
+- This repo's existing `data/digest.db` had 82 rows from a run before both
+  the ranking step and the improved error surfacing existed, 20 of them
+  recorded as `(summarisation failed)` with no real reason captured. The
+  schema migration in `store.py` backfills these old rows to `summarized`
+  (so they aren't reprocessed) but can't recover the original error. If
+  summaries still fail after this update, the stored text will now include
+  the actual exception rather than a generic placeholder.
 - No retry/backoff on rate-limit errors (HTTP 429) specifically yet; a
   request that gets rate-limited currently falls back to the generic
   placeholder-on-failure path rather than waiting and retrying. Less of a

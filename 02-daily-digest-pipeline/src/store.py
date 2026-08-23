@@ -1,7 +1,10 @@
 """SQLite persistence layer for the daily digest pipeline.
 
 Schema:
-- articles:    one row per ingested article, keyed by a hash of its link
+- articles:    one row per ingested article, keyed by a hash of its link.
+               status is one of 'pending' (seen, not yet judged),
+               'summarized' (selected by ranking and summarised), or
+               'rejected' (seen, considered, and ranked out).
 - entities:    named entities extracted per article (many-to-one)
 - themes:      theme tags extracted per article (many-to-one)
 - digest_runs: one row per (topic, day) recording how many articles ran
@@ -21,7 +24,8 @@ CREATE TABLE IF NOT EXISTS articles (
     published_at TEXT,
     ingested_at TEXT NOT NULL,
     summary TEXT,
-    raw_excerpt TEXT
+    raw_excerpt TEXT,
+    status TEXT NOT NULL DEFAULT 'pending'
 );
 
 CREATE TABLE IF NOT EXISTS entities (
@@ -53,7 +57,20 @@ def get_connection(db_path):
     conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON")
     conn.executescript(SCHEMA)
+    _migrate(conn)
     return conn
+
+
+def _migrate(conn):
+    """Add the status column to databases created before it existed,
+    backfilling from summary so rows already processed under the old
+    schema aren't treated as pending again.
+    """
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(articles)")}
+    if "status" not in columns:
+        conn.execute("ALTER TABLE articles ADD COLUMN status TEXT NOT NULL DEFAULT 'pending'")
+        conn.execute("UPDATE articles SET status = 'summarized' WHERE summary IS NOT NULL")
+        conn.commit()
 
 
 def article_exists(conn, article_id):
@@ -64,8 +81,8 @@ def article_exists(conn, article_id):
 def insert_article_stub(conn, article_id, topic_slug, title, link, source_feed, published_at, raw_excerpt):
     conn.execute(
         """INSERT OR IGNORE INTO articles
-           (id, topic_slug, title, link, source_feed, published_at, ingested_at, raw_excerpt)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+           (id, topic_slug, title, link, source_feed, published_at, ingested_at, raw_excerpt, status)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')""",
         (
             article_id,
             topic_slug,
@@ -81,7 +98,9 @@ def insert_article_stub(conn, article_id, topic_slug, title, link, source_feed, 
 
 
 def save_summary(conn, article_id, summary, entities, themes):
-    conn.execute("UPDATE articles SET summary = ? WHERE id = ?", (summary, article_id))
+    conn.execute(
+        "UPDATE articles SET summary = ?, status = 'summarized' WHERE id = ?", (summary, article_id)
+    )
     for ent in entities or []:
         conn.execute(
             "INSERT INTO entities (article_id, entity_text, entity_type) VALUES (?, ?, ?)",
@@ -89,6 +108,13 @@ def save_summary(conn, article_id, summary, entities, themes):
         )
     for theme in themes or []:
         conn.execute("INSERT INTO themes (article_id, theme) VALUES (?, ?)", (article_id, theme))
+    conn.commit()
+
+
+def mark_rejected(conn, article_id):
+    """Mark an article as considered and ranked out, so it's never
+    re-summarised or shown, and never competes in ranking again either."""
+    conn.execute("UPDATE articles SET status = 'rejected' WHERE id = ?", (article_id,))
     conn.commit()
 
 
@@ -101,15 +127,14 @@ def record_digest_run(conn, topic_slug, run_date, article_count):
     conn.commit()
 
 
-def get_unsummarized(conn, topic_slug, limit):
-    """Articles already stored (from a prior run that hit --max-articles or
-    failed partway) that still need a summary. Processed before new entries
-    so a busy day's backlog gets cleared rather than stuck forever, since
-    article_exists() matches on id alone and would otherwise skip them.
+def get_pending(conn, topic_slug, limit=60):
+    """Articles seen (via ingest) but not yet judged by ranking, oldest
+    first. Capped at `limit` to bound both the query and the size of the
+    ranking prompt regardless of how large a backlog might get.
     """
     cur = conn.execute(
         """SELECT id, title, link, raw_excerpt FROM articles
-           WHERE topic_slug = ? AND summary IS NULL
+           WHERE topic_slug = ? AND status = 'pending'
            ORDER BY ingested_at ASC LIMIT ?""",
         (topic_slug, limit),
     )
@@ -120,10 +145,11 @@ def get_unsummarized(conn, topic_slug, limit):
 
 
 def get_articles_for_digest(conn, topic_slug, run_date):
-    """Articles ingested on run_date (YYYY-MM-DD, UTC) for a given topic."""
+    """Summarised (not pending or rejected) articles ingested on run_date
+    (YYYY-MM-DD, UTC) for a given topic."""
     cur = conn.execute(
         """SELECT id, title, link, summary, published_at FROM articles
-           WHERE topic_slug = ? AND date(ingested_at) = ?
+           WHERE topic_slug = ? AND date(ingested_at) = ? AND status = 'summarized'
            ORDER BY published_at DESC""",
         (topic_slug, run_date),
     )

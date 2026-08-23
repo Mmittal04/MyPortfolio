@@ -17,6 +17,13 @@ topics:
       - https://feeds.arstechnica.com/arstechnica/index
       - https://www.wired.com/feed/category/business/latest/rss
       - https://entrackr.com/rss
+      - https://inc42.com/feed/
+      # Additional Indian-tech sources checked (23-08-26): Analytics India
+      # Magazine (analyticsindiamag.com/feed) and MediaNama (medianama.com/feed)
+      # both returned empty/broken from here; Digit.in (digit.in/feed) works
+      # but its all-categories feed mixes Hindi and English and skews toward
+      # product-discount posts rather than editorial coverage, not added.
+      #
       # Dropped after reviewing real sample output (23-08-26):
       # - hnrss.org/frontpage: mixed off-topic personal essays/culture pieces
       #   in with the tech content, and hnrss's description field never

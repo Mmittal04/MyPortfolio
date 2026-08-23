@@ -3,8 +3,11 @@
 Schema:
 - articles:    one row per ingested article, keyed by a hash of its link.
                status is one of 'pending' (seen, not yet judged),
-               'summarized' (selected by ranking and summarised), or
-               'rejected' (seen, considered, and ranked out).
+               'summarized' (selected by ranking and summarised),
+               'failed' (selected and summarisation genuinely failed --
+               API/model error, not a ranking call -- retry-eligible next
+               run), or 'rejected' (ranked out, or a 'failed' article that
+               exhausted MAX_RETRIES; never shown or reconsidered again).
 - entities:    named entities extracted per article (many-to-one)
 - themes:      theme tags extracted per article (many-to-one)
 - digest_runs: one row per (topic, day) recording how many articles ran
@@ -25,7 +28,8 @@ CREATE TABLE IF NOT EXISTS articles (
     ingested_at TEXT NOT NULL,
     summary TEXT,
     raw_excerpt TEXT,
-    status TEXT NOT NULL DEFAULT 'pending'
+    status TEXT NOT NULL DEFAULT 'pending',
+    retry_count INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS entities (
@@ -62,15 +66,25 @@ def get_connection(db_path):
 
 
 def _migrate(conn):
-    """Add the status column to databases created before it existed,
-    backfilling from summary so rows already processed under the old
-    schema aren't treated as pending again.
+    """Add columns to databases created before they existed, backfilling
+    so rows already processed under an older schema aren't treated as
+    pending again -- and reclassify rows saved under the old
+    save_summary-for-everything behaviour, where a genuine summarisation
+    failure was stored as status='summarized' with a placeholder summary
+    text, indistinguishable from a real success. Runs every connection
+    (cheap once caught up) so it self-heals a DB from any prior version.
     """
     columns = {row[1] for row in conn.execute("PRAGMA table_info(articles)")}
     if "status" not in columns:
         conn.execute("ALTER TABLE articles ADD COLUMN status TEXT NOT NULL DEFAULT 'pending'")
         conn.execute("UPDATE articles SET status = 'summarized' WHERE summary IS NOT NULL")
-        conn.commit()
+    if "retry_count" not in columns:
+        conn.execute("ALTER TABLE articles ADD COLUMN retry_count INTEGER NOT NULL DEFAULT 0")
+    conn.execute(
+        "UPDATE articles SET status = 'failed' "
+        "WHERE status = 'summarized' AND summary LIKE '(summarisation failed%'"
+    )
+    conn.commit()
 
 
 def article_exists(conn, article_id):
@@ -118,6 +132,28 @@ def mark_rejected(conn, article_id):
     conn.commit()
 
 
+MAX_RETRIES = 3
+
+
+def save_failure(conn, article_id, reason):
+    """Mark an article as selected and attempted, but not successfully
+    summarised -- a genuine API/model failure, not a ranking rejection.
+    Stays 'failed' (retry-eligible via get_pending, so it competes in
+    ranking again next run) until it has failed MAX_RETRIES times, at
+    which point it's marked 'rejected' instead so a persistently-broken
+    article (e.g. permanently blocked content) doesn't retry forever.
+    """
+    retry_count = conn.execute(
+        "SELECT retry_count FROM articles WHERE id = ?", (article_id,)
+    ).fetchone()[0] + 1
+    status = "rejected" if retry_count >= MAX_RETRIES else "failed"
+    conn.execute(
+        "UPDATE articles SET summary = ?, status = ?, retry_count = ? WHERE id = ?",
+        (reason, status, retry_count, article_id),
+    )
+    conn.commit()
+
+
 def record_digest_run(conn, topic_slug, run_date, article_count):
     conn.execute(
         """INSERT INTO digest_runs (topic_slug, run_date, article_count) VALUES (?, ?, ?)
@@ -128,13 +164,15 @@ def record_digest_run(conn, topic_slug, run_date, article_count):
 
 
 def get_pending(conn, topic_slug, limit=60):
-    """Articles seen (via ingest) but not yet judged by ranking, oldest
-    first. Capped at `limit` to bound both the query and the size of the
-    ranking prompt regardless of how large a backlog might get.
+    """Articles eligible to compete in ranking again: never judged yet
+    ('pending'), or a genuine summarisation failure that hasn't exhausted
+    its retries ('failed'). Oldest first. Capped at `limit` to bound both
+    the query and the size of the ranking prompt regardless of how large
+    a backlog might get.
     """
     cur = conn.execute(
         """SELECT id, title, link, raw_excerpt FROM articles
-           WHERE topic_slug = ? AND status = 'pending'
+           WHERE topic_slug = ? AND status IN ('pending', 'failed')
            ORDER BY ingested_at ASC LIMIT ?""",
         (topic_slug, limit),
     )

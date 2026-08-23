@@ -77,10 +77,12 @@ def run(topics_filter=None, dry_run=False, max_articles=20):
                 result = summarize.summarize_article(entry["title"], entry["raw_excerpt"], dry_run=dry_run)
             except Exception as exc:  # noqa: BLE001 - one bad article shouldn't kill the batch
                 print(f"  ! summarisation failed for {entry['link']}: {exc}", file=sys.stderr)
-                # Store the real reason (truncated) rather than a generic
-                # placeholder, so it's visible in the digest/DB without
-                # needing to dig through the Actions run log separately.
-                result = {"summary": f"(summarisation failed: {exc})"[:500], "entities": [], "themes": []}
+                # Marked 'failed' (not stored via save_summary) so it's
+                # retry-eligible next run instead of stuck forever with a
+                # placeholder -- the real reason is still visible in the
+                # DB without digging through the Actions run log.
+                store.save_failure(conn, entry["id"], f"(summarisation failed: {exc})"[:500])
+                continue
             store.save_summary(
                 conn, entry["id"], result.get("summary", ""), result.get("entities", []), result.get("themes", [])
             )

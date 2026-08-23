@@ -54,7 +54,14 @@ first N candidates unranked rather than blocking the run.
 
 Each article's status in the `articles` table is one of `pending` (seen,
 not yet judged), `summarized` (selected and summarised, shown in the
-digest), or `rejected` (considered and ranked out, never shown again).
+digest), `failed` (selected, but summarisation genuinely errored out --
+retry-eligible, competes in ranking again next run), or `rejected`
+(ranked out, or a `failed` article that exhausted its retries; never
+shown or reconsidered again). A ranking rejection and a summarisation
+failure are deliberately kept separate: the former means the model judged
+it not worth including, the latter means it never got a fair shot, so
+only the latter gets retried, capped at `store.MAX_RETRIES` (3) attempts
+before it's given up on as `rejected` too.
 
 ## Local setup
 
@@ -163,13 +170,15 @@ Technology feed list was reviewed (see `config/topics.yaml` comments).
   Rejected candidates are marked as such immediately rather than retried,
   so a large backlog clears in one run rather than trickling through over
   several days.
-- This repo's existing `data/digest.db` had 82 rows from a run before both
-  the ranking step and the improved error surfacing existed, 20 of them
-  recorded as `(summarisation failed)` with no real reason captured. The
-  schema migration in `store.py` backfills these old rows to `summarized`
-  (so they aren't reprocessed) but can't recover the original error. If
-  summaries still fail after this update, the stored text will now include
-  the actual exception rather than a generic placeholder.
+- This repo's existing `data/digest.db` had 82 rows from a run before the
+  ranking step, the `failed` status, and the improved error surfacing all
+  existed, 20 of them recorded as `(summarisation failed)` with no real
+  reason captured and no way to distinguish them from a real success. The
+  schema migration in `store.py` (runs on every connection, so this
+  applies automatically) reclassifies any row matching that placeholder
+  text from `summarized` to `failed`, making them retry-eligible again --
+  it can't recover the original error, but the next attempt's stored text
+  will include the actual exception rather than a generic placeholder.
 - No retry/backoff on rate-limit errors (HTTP 429) specifically yet; a
   request that gets rate-limited currently falls back to the generic
   placeholder-on-failure path rather than waiting and retrying. Less of a

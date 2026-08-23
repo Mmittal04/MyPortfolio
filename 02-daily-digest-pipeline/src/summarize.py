@@ -13,7 +13,7 @@ pipeline may run against up to three topics a day.
 import json
 import time
 
-DEFAULT_MODEL = "gemini-2.5-flash-lite"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 PROMPT_TEMPLATE = """You are helping build a daily news digest. Given the article \
 title and excerpt below, write:

@@ -11,7 +11,7 @@ of them to find the handful worth including.
 import json
 import sys
 
-DEFAULT_MODEL = "gemini-2.5-flash-lite"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 RANK_PROMPT_TEMPLATE = """You are curating a daily technology digest. Below is a \
 numbered list of candidate article titles and short excerpts. Select the \

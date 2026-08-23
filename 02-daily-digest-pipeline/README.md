@@ -7,12 +7,14 @@ topic per day. A GitHub Actions workflow runs it on a daily cron schedule
 and commits the results back to the repo.
 
 **Cost:** this runs entirely on Gemini's free tier (no billing required).
-Default model is `gemini-2.5-flash-lite`, chosen for its higher daily quota
-(around 1,000 requests/day at last check), comfortably enough for the
-current single-topic, 10-article-per-run setup. Free tier note: Google may
-use free-tier prompts/responses to improve their products, worth knowing
-given the topics here include public news content, not personal data. Rate
-limits shift over time, so worth a quick check at
+Default model is `gemini-3.5-flash-lite` (bumped from `gemini-2.5-flash-lite`
+on 2026-08-23 after Google deprecated it for new users -- every summarise
+call was 404ing with "no longer available to new users"), chosen for its
+higher daily quota, comfortably enough for the current single-topic,
+10-article-per-run setup. Free tier note: Google may use free-tier
+prompts/responses to improve their products, worth knowing given the
+topics here include public news content, not personal data. Rate limits
+and model availability shift over time, so worth a quick check at
 [ai.google.dev](https://ai.google.dev/gemini-api/docs/rate-limits) if runs
 start failing.
 

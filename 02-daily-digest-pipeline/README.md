@@ -8,18 +8,20 @@ and commits the results back to the repo.
 
 **Cost:** this runs entirely on Gemini's free tier (no billing required).
 Default model is `gemini-2.5-flash-lite`, chosen for its higher daily quota
-(around 1,000 requests/day at last check), which comfortably covers all
-three topics at the current 20-article-per-topic cap. Free tier note: Google
-may use free-tier prompts/responses to improve their products, worth
-knowing given the topics here include public news content, not personal
-data. Rate limits shift over time, so worth a quick check at
+(around 1,000 requests/day at last check), comfortably enough for the
+current single-topic, 10-article-per-run setup. Free tier note: Google may
+use free-tier prompts/responses to improve their products, worth knowing
+given the topics here include public news content, not personal data. Rate
+limits shift over time, so worth a quick check at
 [ai.google.dev](https://ai.google.dev/gemini-api/docs/rate-limits) if runs
 start failing.
 
-Currently active: **Technology** (built first to validate the pipeline
-end to end, since its feeds are the most stable). Gender-affirming
-care/transgender rights and Energy & Climate are configured but left
-inactive in `config/topics.yaml` pending a feed-list review.
+Currently: **Technology only**, capped at the top 10 new articles per run.
+Gender-affirming care/transgender rights and Energy & Climate were removed
+from `config/topics.yaml` (23-08-26) to be rebuilt later with a proper
+feed-list review, rather than left in half-configured. The Technology feed
+list itself was reviewed against real sampled output on the same date: see
+the comments in `config/topics.yaml` for what was dropped and why.
 
 ## Structure
 
@@ -111,18 +113,20 @@ etc.): generate a new one in AI Studio, update the GitHub secret and any
 local `.env` file to use it, then delete the old key from AI Studio's API
 Keys page.
 
-## Adding the other two topics
+## Adding topics back
 
 Each topic is a plain entry in `config/topics.yaml`: a slug, display name,
-a feed list, an optional keyword filter, and an `active` flag. To bring
-Energy & Climate online, review/expand its feed list and flip
-`active: true`; no code changes needed.
+a feed list, an optional keyword filter, and an `active` flag. Adding
+Gender-Affirming Care & Transgender Rights and Energy & Climate back means
+adding a new entry to the file, not touching the pipeline code, same as
+adding any other topic.
 
-The trans rights/gender-affirming care topic is flagged inactive
-deliberately: worth reviewing the feed list together before it goes live,
-since source spread matters more for that topic (aiming for a mix of
-mainstream/wire and specialist health-policy/legal-tracking outlets rather
-than a single advocacy angle) than for the other two.
+Worth reviewing the feed list carefully before the trans rights/
+gender-affirming care topic goes live, since source spread matters more
+there than for a general technology topic: aim for a mix of mainstream/
+wire and specialist health-policy/legal-tracking outlets rather than a
+single advocacy angle, ideally sampling real output first the way the
+Technology feed list was reviewed (see `config/topics.yaml` comments).
 
 ## Known limitations / next steps
 
@@ -135,13 +139,14 @@ than a single advocacy angle) than for the other two.
   its `finish_reason`, etc.) to stderr rather than silently storing a blank
   summary. If a batch shows empty summaries across the board, check the
   Actions run log for these `! summarisation failed for ...` lines first.
-- `--max-articles` caps each topic to 20 new articles summarised per run by
-  default, to stay well within the free-tier daily request quota on a busy
-  day. Anything past the cap is still stored as a stub and picked up first
+- `--max-articles` caps the topic to the top 10 new articles summarised per
+  run by default ("top" meaning first-encountered across feeds in the order
+  they're listed in `config/topics.yaml`, not ranked by any quality signal
+  yet). Anything past the cap is still stored as a stub and picked up first
   on the next run (`store.get_unsummarized`), so a busy day's backlog
   clears over subsequent runs rather than being silently dropped.
 - No retry/backoff on rate-limit errors (HTTP 429) specifically yet; a
   request that gets rate-limited currently falls back to the generic
-  placeholder-on-failure path rather than waiting and retrying. Worth
-  adding if all three topics are active and regularly bump up against the
-  daily quota.
+  placeholder-on-failure path rather than waiting and retrying. Less of a
+  concern now at one topic and a 10-article cap, worth revisiting if more
+  topics come back online.

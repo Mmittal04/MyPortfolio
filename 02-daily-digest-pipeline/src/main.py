@@ -83,7 +83,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run the daily digest pipeline.")
     parser.add_argument("--dry-run", action="store_true", help="Skip real LLM calls, use placeholder summaries.")
     parser.add_argument("--topics", nargs="*", help="Restrict to these topic slugs (default: all active).")
-    parser.add_argument("--max-articles", type=int, default=20, help="Max new articles to summarise per topic per run.")
+    parser.add_argument("--max-articles", type=int, default=10, help="Max new articles to summarise per topic per run.")
     args = parser.parse_args()
     run(topics_filter=args.topics, dry_run=args.dry_run, max_articles=args.max_articles)
 

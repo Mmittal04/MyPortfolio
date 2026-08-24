@@ -18,12 +18,16 @@ and model availability shift over time, so worth a quick check at
 [ai.google.dev](https://ai.google.dev/gemini-api/docs/rate-limits) if runs
 start failing.
 
-Currently: **Technology only**, capped at the top 10 new articles per run.
-Gender-affirming care/transgender rights and Energy & Climate were removed
+Currently: **Technology, Finance, and Politics**, each capped at the top 10
+new articles per run. Gender-affirming care/transgender rights was removed
 from `config/topics.yaml` (23-08-26) to be rebuilt later with a proper
-feed-list review, rather than left in half-configured. The Technology feed
-list itself was reviewed against real sampled output on the same date: see
-the comments in `config/topics.yaml` for what was dropped and why.
+feed-list review, rather than left in half-configured. Energy & Climate was
+considered as a fourth topic (24-08-26) but folded into the Finance and
+Politics keyword lists instead, rather than standing up a topic with a weak
+feed list (the India-specific climate sources checked came back stale or
+empty). Every feed list was reviewed against real fetched output before
+being added: see the comments in `config/topics.yaml` for what was checked,
+dropped, and why per topic.
 
 ## Structure
 
@@ -145,9 +149,8 @@ Keys page.
 
 Each topic is a plain entry in `config/topics.yaml`: a slug, display name,
 a feed list, an optional keyword filter, and an `active` flag. Adding
-Gender-Affirming Care & Transgender Rights and Energy & Climate back means
-adding a new entry to the file, not touching the pipeline code, same as
-adding any other topic.
+Gender-Affirming Care & Transgender Rights back means adding a new entry to
+the file, not touching the pipeline code, same as adding any other topic.
 
 Worth reviewing the feed list carefully before the trans rights/
 gender-affirming care topic goes live, since source spread matters more

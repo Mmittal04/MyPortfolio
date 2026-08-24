@@ -46,5 +46,91 @@ topics:
       - research
       - data
 
-# Gender-affirming care/transgender rights and Energy & Climate topics
-# removed for now, to be rebuilt with a proper feed-list review later.
+  - slug: finance
+    name: "Finance"
+    active: true
+    feeds:
+      - https://feeds.bbci.co.uk/news/business/rss.xml
+      - https://www.business-standard.com/rss/markets-106.rss
+      - https://www.business-standard.com/rss/economy-policy-102.rss
+      - https://www.ft.com/myft/following/54f48d03-21a6-4f3b-a9d2-e2add7d92008?format=rss
+      # FT feed above: ft.com is on the compliance blocklist for this
+      # project's fetch tooling, so it couldn't be verified the way every
+      # other feed here was (live fetch + real content check). The
+      # ?format=rss suffix is FT's documented way of turning a MyFT
+      # "following" page into an actual feed rather than the HTML page;
+      # worth checking the Actions log after the first real run in case it
+      # comes back empty.
+      #
+      # Checked and dropped (24-08-26):
+      # - feeds.content.dowjones.io/public/rss/mw_topstories (MarketWatch):
+      #   verified working, but content skews toward US personal-finance
+      #   advice columns rather than markets/companies news. Dropped per
+      #   review, may revisit later for the "Personal Finance" keyword
+      #   specifically.
+      # - CNBC (cnbc.com/id/10001147/device/rss/rss.html): endpoint dead,
+      #   returns nothing.
+      # - Yahoo Finance RSS: discontinued, endpoint returns nothing.
+      # - Nikkei Asia RSS: endpoint returns nothing, likely discontinued.
+      # - Economic Times markets RSS: blocked from here (compliance
+      #   blocklist), couldn't verify.
+      # - Reuters: no working public RSS found (Reuters discontinued most
+      #   public feeds some years back).
+    keywords:
+      - india
+      - us
+      - uk
+      - asia
+      - companies
+      - markets
+      - personal finance
+      - stocks
+      - climate
+      - energy
+
+  - slug: politics
+    name: "Politics"
+    active: true
+    feeds:
+      - https://feeds.bbci.co.uk/news/world/rss.xml
+      - https://www.aljazeera.com/xml/rss/all.xml
+      - https://www.hrw.org/rss/news
+      # BBC World and Al Jazeera are both broad wire feeds mixed with sport/
+      # lifestyle/opinion content; keyword filtering below is doing more
+      # work here than it did for Technology. Human Rights Watch is an
+      # advocacy organisation, not wire journalism -- included deliberately
+      # for direct coverage of migration, democracy, and women's/LGBTQ+
+      # rights, but it's not a neutral source in the way BBC/Al Jazeera are
+      # meant to be; worth keeping in mind when reading its entries in the
+      # digest.
+      #
+      # Checked and dropped/blocked (24-08-26):
+      # - theguardian.com/world/rss: blocked from here (compliance
+      #   blocklist), couldn't verify.
+      # - thehindu.com and hindustantimes.com (for India-specific politics
+      #   coverage): both blocked from here, couldn't verify. This means
+      #   there's no dedicated India-politics source yet, a real gap given
+      #   the keyword list.
+      # - npr.org/rss/rss.php?id=1004: endpoint returns nothing, likely
+      #   discontinued.
+    keywords:
+      - migration
+      - democracy
+      - us
+      - uk
+      - india
+      - lgbtq+ rights
+      - women's rights
+      - youth
+      - unemployment
+      - economy
+      - wars & conflicts
+      - climate
+      - energy
+
+# Gender-affirming care/transgender rights removed for now, to be rebuilt
+# with a proper feed-list review later. Energy & Climate was considered as
+# its own topic (24-08-26) but folded into the Finance and Politics keyword
+# lists instead, rather than standing up a fourth topic with its own
+# (currently weak -- Mongabay India came back stale, Down To Earth empty)
+# feed list.

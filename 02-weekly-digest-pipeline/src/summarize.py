@@ -6,8 +6,8 @@ so the model is constrained to return matching JSON directly, rather than
 running a separate NER library or hoping a plain-text instruction is obeyed.
 
 Free tier: no billing required, key from aistudio.google.com/apikey. Default
-model is gemini-2.5-flash-lite for its higher daily request quota, since this
-pipeline may run against up to three topics a day.
+model is gemini-3.5-flash-lite for its higher daily request quota, since this
+pipeline may run against up to three topics per run.
 """
 
 import json
@@ -15,7 +15,7 @@ import time
 
 DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
-PROMPT_TEMPLATE = """You are helping build a daily news digest. Given the article \
+PROMPT_TEMPLATE = """You are helping build a weekly news digest. Given the article \
 title and excerpt below, write:
 
 - a neutral, factual 2-3 sentence summary

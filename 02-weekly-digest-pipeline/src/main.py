@@ -1,5 +1,5 @@
 """Orchestrator: for each active topic, ingest new articles, summarise them,
-store the results, and write today's Markdown digest.
+store the results, and write this run's Markdown digest.
 
 Usage:
     python src/main.py                          # run all active topics
@@ -96,7 +96,7 @@ def run(topics_filter=None, dry_run=False, max_articles=20):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run the daily digest pipeline.")
+    parser = argparse.ArgumentParser(description="Run the weekly digest pipeline.")
     parser.add_argument("--dry-run", action="store_true", help="Skip real LLM calls, use placeholder summaries.")
     parser.add_argument("--topics", nargs="*", help="Restrict to these topic slugs (default: all active).")
     parser.add_argument("--max-articles", type=int, default=10, help="Max new articles to summarise per topic per run.")

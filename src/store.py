@@ -186,14 +186,14 @@ def get_articles_for_digest(conn, topic_slug, run_date):
     """Summarised (not pending or rejected) articles ingested on run_date
     (YYYY-MM-DD, UTC) for a given topic."""
     cur = conn.execute(
-        """SELECT id, title, link, summary, published_at FROM articles
+        """SELECT id, title, link, summary, published_at, source_feed FROM articles
            WHERE topic_slug = ? AND date(ingested_at) = ? AND status = 'summarized'
            ORDER BY published_at DESC""",
         (topic_slug, run_date),
     )
     rows = cur.fetchall()
     articles = []
-    for article_id, title, link, summary, published_at in rows:
+    for article_id, title, link, summary, published_at, source_feed in rows:
         ent_cur = conn.execute(
             "SELECT entity_text, entity_type FROM entities WHERE article_id = ?", (article_id,)
         )
@@ -207,6 +207,7 @@ def get_articles_for_digest(conn, topic_slug, run_date):
                 "link": link,
                 "summary": summary,
                 "published_at": published_at,
+                "source_feed": source_feed,
                 "entities": entities,
                 "themes": themes,
             }

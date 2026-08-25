@@ -1,4 +1,4 @@
-name: Daily Digest
+name: Weekly Digest
 
 on:
   schedule:
@@ -39,7 +39,7 @@ jobs:
           git config user.email "digest-bot@users.noreply.github.com"
           git add digests/ data/digest.db
           if ! git diff --quiet --cached; then
-            git commit -m "Daily digest $(date -u +%F)"
+            git commit -m "Weekly digest $(date -u +%F)"
             # main is a monorepo shared with manual pushes, so rebase onto
             # whatever's there now before pushing -- a plain push fails
             # non-fast-forward if anything landed on main since checkout.

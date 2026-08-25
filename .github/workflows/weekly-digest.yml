@@ -11,9 +11,9 @@ permissions:
 defaults:
   run:
     # All run: steps execute inside this subfolder, since the pipeline
-    # lives at 02-daily-digest-pipeline/ within the MyPortfolio monorepo,
+    # lives at 02-weekly-digest-pipeline/ within the MyPortfolio monorepo,
     # not at the repo root.
-    working-directory: 02-daily-digest-pipeline
+    working-directory: 02-weekly-digest-pipeline
 
 jobs:
   build:

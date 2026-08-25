@@ -53,14 +53,21 @@ topics:
       - https://feeds.bbci.co.uk/news/business/rss.xml
       - https://www.business-standard.com/rss/markets-106.rss
       - https://www.business-standard.com/rss/economy-policy-102.rss
-      - https://www.ft.com/myft/following/54f48d03-21a6-4f3b-a9d2-e2add7d92008?format=rss
-      # FT feed above: ft.com is on the compliance blocklist for this
-      # project's fetch tooling, so it couldn't be verified the way every
-      # other feed here was (live fetch + real content check). The
-      # ?format=rss suffix is FT's documented way of turning a MyFT
-      # "following" page into an actual feed rather than the HTML page;
-      # worth checking the Actions log after the first real run in case it
-      # comes back empty.
+      - https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms
+      # Re-verified all of the above (25-08-26) properly through feedparser
+      # itself (not just curl) with a browser User-Agent -- see the
+      # ingest.py REQUEST_HEADERS fix in the same change: feedparser's
+      # default UA gets a flat 403/zero-entries from business-standard.com,
+      # silently, with no exception raised. All four return real entries
+      # (35-51 each) with the fix in place.
+      #
+      # FT dropped (25-08-26): the URL previously here
+      # (ft.com/myft/following/<id>?format=rss) 302-redirects to
+      # accounts.ft.com/login -- it's a personal "MyFT following" page tied
+      # to someone's FT account, not a public feed, and was never going to
+      # work unauthenticated. No public FT RSS endpoint found to replace it
+      # with; Economic Times Markets (added above) covers some of the same
+      # ground for India specifically.
       #
       # Checked and dropped (24-08-26):
       # - feeds.content.dowjones.io/public/rss/mw_topstories (MarketWatch):
@@ -72,8 +79,6 @@ topics:
       #   returns nothing.
       # - Yahoo Finance RSS: discontinued, endpoint returns nothing.
       # - Nikkei Asia RSS: endpoint returns nothing, likely discontinued.
-      # - Economic Times markets RSS: blocked from here (compliance
-      #   blocklist), couldn't verify.
       # - Reuters: no working public RSS found (Reuters discontinued most
       #   public feeds some years back).
     keywords:
@@ -95,22 +100,27 @@ topics:
       - https://feeds.bbci.co.uk/news/world/rss.xml
       - https://www.aljazeera.com/xml/rss/all.xml
       - https://www.hrw.org/rss/news
-      # BBC World and Al Jazeera are both broad wire feeds mixed with sport/
-      # lifestyle/opinion content; keyword filtering below is doing more
-      # work here than it did for Technology. Human Rights Watch is an
-      # advocacy organisation, not wire journalism -- included deliberately
-      # for direct coverage of migration, democracy, and women's/LGBTQ+
-      # rights, but it's not a neutral source in the way BBC/Al Jazeera are
-      # meant to be; worth keeping in mind when reading its entries in the
-      # digest.
+      - https://www.theguardian.com/world/rss
+      - https://www.thehindu.com/news/national/feeder/default.rss
+      # BBC World, Al Jazeera and Guardian World are broad wire feeds mixed
+      # with sport/lifestyle/opinion content; keyword filtering below is
+      # doing more work here than it did for Technology. Human Rights Watch
+      # is an advocacy organisation, not wire journalism -- included
+      # deliberately for direct coverage of migration, democracy, and
+      # women's/LGBTQ+ rights, but it's not a neutral source in the way the
+      # wire feeds are meant to be; worth keeping in mind when reading its
+      # entries in the digest. The Hindu's National feed is the dedicated
+      # India-politics source the keyword list needed (25-08-26) -- the
+      # earlier gap noted below is now closed; Hindustan Times covers the
+      # same ground and could be added too if The Hindu alone proves thin.
       #
-      # Checked and dropped/blocked (24-08-26):
-      # - theguardian.com/world/rss: blocked from here (compliance
-      #   blocklist), couldn't verify.
-      # - thehindu.com and hindustantimes.com (for India-specific politics
-      #   coverage): both blocked from here, couldn't verify. This means
-      #   there's no dedicated India-politics source yet, a real gap given
-      #   the keyword list.
+      # Guardian/Hindu were previously listed as blocked from this
+      # project's fetch tooling and unverified; re-checked (25-08-26)
+      # directly through feedparser with a browser User-Agent (see the
+      # ingest.py REQUEST_HEADERS fix in the same change) and both return
+      # real entries (45 and 60 respectively).
+      #
+      # Checked and dropped (24-08-26):
       # - npr.org/rss/rss.php?id=1004: endpoint returns nothing, likely
       #   discontinued.
     keywords:

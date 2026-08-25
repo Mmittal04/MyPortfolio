@@ -13,7 +13,7 @@ import sys
 
 DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
-RANK_PROMPT_TEMPLATE = """You are curating a daily technology digest. Below is a \
+RANK_PROMPT_TEMPLATE = """You are curating a daily {topic_name} digest. Below is a \
 numbered list of candidate article titles and short excerpts. Select the \
 {top_n} most worth including.
 
@@ -42,7 +42,7 @@ def _format_candidates(entries):
     return "\n".join(lines)
 
 
-def rank_articles(entries, top_n=10, dry_run=False, model=DEFAULT_MODEL, client=None):
+def rank_articles(entries, topic_name, top_n=10, dry_run=False, model=DEFAULT_MODEL, client=None):
     """Returns the subset of `entries` worth summarising, ranked and
     truncated to at most top_n. Falls back to a simple truncation (first
     top_n, unranked) if there's nothing to rank, dry_run is set, or the
@@ -64,7 +64,9 @@ def rank_articles(entries, top_n=10, dry_run=False, model=DEFAULT_MODEL, client=
 
         from google.genai import types
 
-        prompt = RANK_PROMPT_TEMPLATE.format(top_n=top_n, candidates=_format_candidates(entries))
+        prompt = RANK_PROMPT_TEMPLATE.format(
+            topic_name=topic_name, top_n=top_n, candidates=_format_candidates(entries)
+        )
         response = client.models.generate_content(
             model=model,
             contents=prompt,

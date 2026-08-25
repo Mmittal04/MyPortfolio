@@ -2,34 +2,282 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Maan's Portfolio</title>
+<title>Maan Mittal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Maan Mittal — Economics &amp; Data Analytics student at the University of Manchester. Research, data analysis, and automation projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;max-width:640px;margin:4rem auto;padding:0 1.5rem;color:#1a1a1a;line-height:1.55}
-  h1{font-size:1.5rem;margin-bottom:.25rem}
-  p.lead{color:#555;margin-top:0}
-  ul{padding-left:1.1rem}
-  li{margin:0.9rem 0}
-  a.title{font-weight:600;text-decoration:none;color:#0645ad}
-  a.title:hover{text-decoration:underline}
-  .desc{color:#444;display:block;margin-top:.15rem}
-  .meta{color:#888;font-size:.85em}
+  :root{
+    --ink:#181a1f;
+    --ink-soft:#4a4e58;
+    --ink-faint:#8a8d97;
+    --paper:#faf9f7;
+    --surface:#ffffff;
+    --line:#e7e4de;
+    --accent:#2c3e6b;
+    --accent-soft:#eef1f8;
+    --radius:10px;
+    --measure:680px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--ink)}
+  a:hover{color:var(--accent)}
+  .wrap{max-width:var(--measure);margin:0 auto;padding:0 24px}
+  svg.icon{width:16px;height:16px;flex:0 0 auto;stroke:currentColor;fill:none;stroke-width:1.7}
+
+  /* ---------- static header ---------- */
+  header.hero{padding:88px 0 0}
+  .who{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+  .avatar{
+    width:56px;height:56px;border-radius:50%;object-fit:cover;
+    border:1px solid var(--line);background:var(--surface);flex:0 0 auto;
+  }
+  h1.name{
+    font-family:'Fraunces',Georgia,serif;
+    font-weight:500;
+    font-size:clamp(2.1rem, 4.4vw, 2.9rem);
+    line-height:1.1;
+    letter-spacing:-.01em;
+    margin:0;
+    color:var(--ink);
+  }
+  .meta-lines{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+  .meta-line{display:flex;align-items:center;gap:9px;color:var(--ink-soft);font-size:.94rem}
+  .meta-line svg.icon{color:var(--ink-faint)}
+  p.tagline{
+    font-size:1.1rem;
+    color:var(--ink-soft);
+    max-width:58ch;
+    margin:0 0 40px;
+  }
+
+  /* ---------- tabs ---------- */
+  nav.tabs{display:flex;gap:28px;border-bottom:1px solid var(--line)}
+  nav.tabs button{
+    appearance:none;background:none;border:0;cursor:pointer;
+    padding:0 0 14px;font-family:inherit;font-size:.95rem;font-weight:600;
+    color:var(--ink-faint);border-bottom:2px solid transparent;
+    margin-bottom:-1px;transition:color .15s;
+  }
+  nav.tabs button:hover{color:var(--ink)}
+  nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+  main{padding:44px 0 80px}
+  .panel{display:none}
+  .panel.active{display:block}
+
+  /* ---------- about panel ---------- */
+  p.about{font-size:1.05rem;color:var(--ink-soft);max-width:64ch;margin:0 0 40px}
+
+  .block-label{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  .skills-block{margin-bottom:36px}
+  .skills-group{margin-bottom:16px}
+  .skills-group:last-child{margin-bottom:0}
+  .skills-sub{font-size:.75rem;font-weight:600;color:var(--ink-faint);margin-bottom:8px}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{
+    padding:6px 12px;border-radius:7px;background:var(--surface);border:1px solid var(--line);
+    font-size:.88rem;color:var(--ink-soft);font-weight:500;
+  }
+
+  .contact-block .tag-row{gap:10px}
+  .contact-pill{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:8px 16px;border-radius:999px;
+    font-size:.9rem;font-weight:500;text-decoration:none;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink);
+    transition:border-color .15s, background .15s;
+  }
+  .contact-pill:hover{border-color:var(--ink);background:var(--accent-soft);color:var(--ink)}
+
+  /* ---------- projects panel ---------- */
+  .projects-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .gh-corner{
+    display:inline-flex;align-items:center;gap:7px;color:var(--ink-soft);
+    text-decoration:none;font-size:.88rem;font-weight:600;
+  }
+  .gh-corner:hover{color:var(--ink)}
+  .project-card{
+    border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
+    padding:26px 28px;margin-bottom:20px;
+  }
+  .project-card:last-child{margin-bottom:0}
+  .project-title{font-weight:600;font-size:1.12rem;margin:0}
+  .project-stack{font-size:.82rem;color:var(--ink-faint);font-weight:600;margin:4px 0 12px}
+  .project-desc{color:var(--ink-soft);margin:0 0 16px}
+  .project-links{display:flex;gap:18px;flex-wrap:wrap}
+  .project-links a{font-size:.88rem;font-weight:600;text-decoration:none;color:var(--ink)}
+  .project-links a:hover{color:var(--accent);text-decoration:underline}
+
+  /* ---------- resume panel ---------- */
+  .resume-download{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 20px;border-radius:8px;
+    background:var(--ink);color:#fff;text-decoration:none;
+    font-size:.92rem;font-weight:600;margin-bottom:20px;
+  }
+  .resume-download:hover{background:var(--accent);color:#fff}
+  .resume-embed{
+    width:100%;height:82vh;border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--surface);
+  }
+
+  footer{
+    border-top:1px solid var(--line);padding:32px 0 56px;
+    color:var(--ink-faint);font-size:.86rem;
+  }
+
+  @media (max-width:600px){
+    header.hero{padding:56px 0 0}
+    main{padding:36px 0 56px}
+    nav.tabs{gap:20px}
+    .resume-embed{height:70vh}
+  }
 </style>
 </head>
 <body>
-<h1>MyPortfolio</h1>
-<p class="lead">A collection of beginner-friendly projects exploring data analysis, automation, and interesting datasets.</p>
-<ul>
-  <li>
-    <a class="title" href="https://github.com/Mmittal04/MyPortfolio/tree/main/01-analysing-movie-ratings">Analysing Movie Ratings</a>
-    <span class="desc">Analysing movie ratings using web scraping techniques in R.</span>
-    <span class="meta">Source on GitHub (R script + scraped data, no live page)</span>
-  </li>
-  <li>
-    <a class="title" href="02-weekly-digest-pipeline/Weekly%20Digest%20Viewer/site/">Weekly Digest Viewer</a>
-    <span class="desc">An automated pipeline that pulls RSS feeds by topic, filters/summarises them, and generates a weekly digest — presented here as a live site, tabbed by topic.</span>
-    <span class="meta"><a href="https://github.com/Mmittal04/MyPortfolio/tree/main/02-weekly-digest-pipeline">Source on GitHub</a></span>
-  </li>
-</ul>
+
+<header class="hero wrap">
+  <div class="who">
+    <img class="avatar" src="assets/profile.jpg" alt="Maan Mittal" onerror="this.style.display='none'">
+    <h1 class="name">Hello, I'm Maan!</h1>
+  </div>
+  <div class="meta-lines">
+    <div class="meta-line">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+      Economics and Data Analytics, University of Manchester
+    </div>
+    <div class="meta-line">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M20 10c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.8"/></svg>
+      Manchester, UK
+    </div>
+  </div>
+  <p class="tagline">Always tinkering with systems and products that could work better. And endlessly
+    curious about why people do what they do and what the numbers have to say about it. Take a look at
+    a few of the projects below, and say hi if something catches your eye.</p>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="about">About</button>
+    <button role="tab" aria-selected="false" data-tab="projects">Projects</button>
+    <button role="tab" aria-selected="false" data-tab="resume">Resume</button>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="panel active" id="panel-about">
+    <p class="about">I'm a third-year Economics and Data Analytics student at the University of
+      Manchester. Most of my work sits at the intersection of research and strategy. Outside coursework,
+      I help run my university's open-data and reproducibility community, and I build interesting
+      projects to keep learning by shipping something real. Previously interned at Pratham India and
+      Ditchley Foundation.</p>
+
+    <div class="skills-block">
+      <div class="block-label">Skills</div>
+      <div class="skills-group">
+        <div class="skills-sub">Languages</div>
+        <div class="tag-row">
+          <span class="tag">English — fluent</span>
+          <span class="tag">Hindi — fluent</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-sub">Tools</div>
+        <div class="tag-row">
+          <span class="tag">R</span><span class="tag">Python</span><span class="tag">SQL / MySQL</span>
+          <span class="tag">Tableau</span><span class="tag">Neo4j / Cypher</span><span class="tag">Excel</span>
+          <span class="tag">PowerPoint</span><span class="tag">Figma</span><span class="tag">Miro</span>
+          <span class="tag">Canva</span><span class="tag">GitHub</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-block">
+      <div class="block-label">Contact</div>
+      <div class="tag-row">
+        <a class="contact-pill" href="mailto:maanmittal04@gmail.com">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7 10-7"/></svg>
+          Email
+        </a>
+        <a class="contact-pill" href="https://www.linkedin.com/in/maanmittal" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 21v-7a3 3 0 0 1 6 0v7M10 9v12"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-projects">
+    <div class="projects-head">
+      <div class="block-label" style="margin-bottom:0">Selected work</div>
+      <a class="gh-corner" href="https://github.com/Mmittal04" target="_blank" rel="noopener">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.4 9.4 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .26.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+        github.com/Mmittal04
+      </a>
+    </div>
+
+    <div class="project-card">
+      <p class="project-title">Analysing Movie Ratings</p>
+      <p class="project-stack">R · web scraping</p>
+      <p class="project-desc">An introductory project scraping and analysing movie rating data, built
+        for a SOSS peer workshop on R and web-scraping fundamentals.</p>
+      <div class="project-links">
+        <a href="https://github.com/Mmittal04/MyPortfolio/tree/main/01-analysing-movie-ratings" target="_blank" rel="noopener">Source on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <p class="project-title">Weekly Digest Viewer</p>
+      <p class="project-stack">Python · GitHub Actions · Gemini API · JavaScript</p>
+      <p class="project-desc">An automated pipeline that ingests RSS feeds across three topics every
+        week, ranks and summarises the coverage with the Gemini API, and publishes the results as a
+        live, tabbed reader site.</p>
+      <div class="project-links">
+        <a href="02-weekly-digest-pipeline/Weekly%20Digest%20Viewer/site/">View live site →</a>
+        <a href="https://github.com/Mmittal04/MyPortfolio/tree/main/02-weekly-digest-pipeline" target="_blank" rel="noopener">Source on GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-resume">
+    <a class="resume-download" href="assets/resume.pdf" download>
+      <svg class="icon" viewBox="0 0 24 24" stroke="white"><path d="M12 3v13m0 0 5-5m-5 5-5-5"/><path d="M4 20h16"/></svg>
+      Download résumé
+    </a>
+    <object class="resume-embed" data="assets/resume.pdf" type="application/pdf">
+      <p>Your browser can't display the résumé inline. <a href="assets/resume.pdf">Download it here.</a></p>
+    </object>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span>Maan Mittal — Manchester, UK</span>
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('nav.tabs button');
+  const panels = { about: document.getElementById('panel-about'),
+                    projects: document.getElementById('panel-projects'),
+                    resume: document.getElementById('panel-resume') };
+  tabs.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      tabs.forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+      Object.entries(panels).forEach(([key, el]) => el.classList.toggle('active', key === btn.dataset.tab));
+    });
+  });
+</script>
+
 </body>
 </html>

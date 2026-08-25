@@ -16,6 +16,7 @@ DIGEST_TEMPLATE = """# {{ topic_name }} — Weekly Digest — {{ run_date }}
 
 **Themes:** {{ a.themes|join(', ') if a.themes else '—' }}
 **Entities:** {{ a.entities|map(attribute='text')|join(', ') if a.entities else '—' }}
+**Feed:** {{ a.source_feed if a.source_feed else '—' }}
 
 ---
 {% endfor %}

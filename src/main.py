@@ -62,7 +62,7 @@ def run(topics_filter=None, dry_run=False, max_articles=20):
 
         candidates = pending + new_entries
         print(f"[{topic['slug']}] ranking {len(candidates)} candidate(s) for the top {max_articles}")
-        selected = rank.rank_articles(candidates, top_n=max_articles, dry_run=dry_run)
+        selected = rank.rank_articles(candidates, topic["name"], top_n=max_articles, dry_run=dry_run)
         selected_ids = {entry["id"] for entry in selected}
 
         for entry in candidates:

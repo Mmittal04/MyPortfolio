@@ -10,20 +10,24 @@ and commits the results back to the repo.
 Default model is `gemini-3.5-flash-lite` (bumped from `gemini-2.5-flash-lite`
 on 2026-08-23 after Google deprecated it for new users -- every summarise
 call was 404ing with "no longer available to new users"), chosen for its
-higher daily quota, comfortably enough for the current single-topic,
-10-article-per-run setup. Free tier note: Google may use free-tier
+higher daily quota, comfortably enough for the current three-topic,
+10-article-per-topic-per-run setup. Free tier note: Google may use free-tier
 prompts/responses to improve their products, worth knowing given the
 topics here include public news content, not personal data. Rate limits
 and model availability shift over time, so worth a quick check at
 [ai.google.dev](https://ai.google.dev/gemini-api/docs/rate-limits) if runs
 start failing.
 
-Currently: **Technology only**, capped at the top 10 new articles per run.
-Gender-affirming care/transgender rights and Energy & Climate were removed
+Currently: **Technology, Finance, and Politics**, each capped at the top 10
+new articles per run. Gender-affirming care/transgender rights was removed
 from `config/topics.yaml` (23-08-26) to be rebuilt later with a proper
-feed-list review, rather than left in half-configured. The Technology feed
-list itself was reviewed against real sampled output on the same date: see
-the comments in `config/topics.yaml` for what was dropped and why.
+feed-list review, rather than left in half-configured. Energy & Climate was
+considered as a fourth topic (24-08-26) but folded into the Finance and
+Politics keyword lists instead, rather than standing up a topic with a weak
+feed list (the India-specific climate sources checked came back stale or
+empty). Every feed list was reviewed against real fetched output before
+being added: see the comments in `config/topics.yaml` for what was checked,
+dropped, and why per topic.
 
 ## Structure
 
@@ -48,7 +52,11 @@ all pending candidates (new entries plus anything left over from previous
 runs, capped at 60) and makes one Gemini call asking it to pick the top N
 worth reading, prioritising genuine news significance and original
 reporting over PR/announcement posts, listicles, and near-duplicate
-coverage of the same event. Only the selected ones get a full
+coverage of the same event. The ranking prompt takes the topic's display
+name (`topic["name"]` from `config/topics.yaml`) as a parameter -- it was
+hardcoded to "technology" until Finance and Politics were added
+(25-08-26), which would have quietly biased ranking judgement on every
+non-Technology topic towards a tech framing. Only the selected ones get a full
 summarisation call; everything else is marked `rejected` in the database
 so it's never re-considered or shown, rather than sitting in an endless
 retry queue. If ranking itself fails for any reason, it falls back to the
@@ -78,11 +86,15 @@ pip install -r requirements.txt
 # placeholder summaries, no API key or cost required
 python src/main.py --dry-run
 
-# Real run against Technology only
+# Real run, all active topics
+python src/main.py
+
+# Real run against one topic only
 python src/main.py --topics technology
 ```
 
-Output lands in `digests/technology/<YYYY-MM-DD>.md` and `data/digest.db`.
+Output lands in `digests/<slug>/<YYYY-MM-DD>.md` (one file per active topic)
+and `data/digest.db`.
 
 ## Getting a Gemini API key
 
@@ -145,9 +157,8 @@ Keys page.
 
 Each topic is a plain entry in `config/topics.yaml`: a slug, display name,
 a feed list, an optional keyword filter, and an `active` flag. Adding
-Gender-Affirming Care & Transgender Rights and Energy & Climate back means
-adding a new entry to the file, not touching the pipeline code, same as
-adding any other topic.
+Gender-Affirming Care & Transgender Rights back means adding a new entry to
+the file, not touching the pipeline code, same as adding any other topic.
 
 Worth reviewing the feed list carefully before the trans rights/
 gender-affirming care topic goes live, since source spread matters more
@@ -183,6 +194,13 @@ Technology feed list was reviewed (see `config/topics.yaml` comments).
   will include the actual exception rather than a generic placeholder.
 - No retry/backoff on rate-limit errors (HTTP 429) specifically yet; a
   request that gets rate-limited currently falls back to the generic
-  placeholder-on-failure path rather than waiting and retrying. Less of a
-  concern now at one topic and a 10-article cap, worth revisiting if more
-  topics come back online.
+  placeholder-on-failure path rather than waiting and retrying. Worth
+  revisiting now that three topics run per day instead of one.
+- `ingest.py` sends an explicit browser-style User-Agent on every feed
+  fetch (25-08-26 fix). feedparser's default UA
+  (`feedparser/6.x +https://github.com/...`) got a flat 403 from
+  business-standard.com -- and feedparser doesn't raise on that, it just
+  returns zero entries with `bozo=True` and no error printed anywhere, so
+  a UA-blocked feed was failing completely silently. Caught by testing
+  every candidate feed through feedparser directly (not just curl) before
+  adding Finance/Politics; worth doing the same for any future feed.

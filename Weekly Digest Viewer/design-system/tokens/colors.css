@@ -1,0 +1,30 @@
+:root{
+/* --- Base ramps ------------------------------------------------------- */
+/* Clay — primary warm hue */
+--clay-100:#F8E9E0;--clay-200:#F0D5C5;--clay-300:#E3B39A;--clay-400:#CC8A6B;--clay-500:#B4623F;--clay-600:#9E4A2E;--clay-700:#833C22;--clay-800:#6B3019;--clay-900:#4A1F11;
+/* Teal — split-complement A */
+--teal-100:#DCEBE8;--teal-300:#8FBDB5;--teal-500:#3E877D;--teal-600:#2E6B63;--teal-700:#1E4B45;
+/* Indigo — split-complement B */
+--indigo-100:#E2E7F0;--indigo-300:#A6B2CC;--indigo-500:#5A6D99;--indigo-600:#3C4E7A;--indigo-700:#2A3859;
+/* Sand — warm neutrals */
+--sand-50:#FCF9F4;--sand-100:#F6F1E8;--sand-200:#EDE5D8;--sand-300:#DED3C2;--sand-400:#B9AB96;--sand-500:#8C7F6C;--sand-600:#6A5F50;--sand-700:#4A4237;--sand-800:#2F2A22;--sand-900:#1C1913;
+/* Signal */
+--amber-500:#C2872B;--amber-100:#F7EBD2;--rust-600:#A33A2B;--rust-100:#F6DED9;
+
+/* --- Semantic aliases -------------------------------------------------- */
+--text-primary:var(--sand-900);--text-body:var(--sand-800);--text-secondary:var(--sand-600);--text-muted:var(--sand-500);--text-inverse:var(--sand-50);--text-accent:var(--clay-700);--text-link:var(--clay-700);--text-link-hover:var(--clay-900);
+
+--surface-page:var(--sand-100);--surface-card:#FFFDFA;--surface-raised:var(--sand-50);--surface-sunken:var(--sand-200);--surface-inverse:var(--sand-900);--surface-accent-soft:var(--clay-100);
+
+--border-hairline:rgba(28,25,19,.08);--border-subtle:var(--sand-300);--border-strong:var(--sand-400);--border-accent:var(--clay-400);
+
+--accent-primary:var(--clay-600);--accent-primary-hover:var(--clay-700);--accent-primary-press:var(--clay-800);--accent-secondary:var(--teal-600);--accent-tertiary:var(--indigo-600);
+--focus-ring:var(--indigo-600);
+
+--status-empty:var(--sand-500);--status-error-fg:var(--rust-600);--status-error-bg:var(--rust-100);--status-notice-fg:var(--amber-500);--status-notice-bg:var(--amber-100);
+
+/* --- Topic accents (one per digest topic) ------------------------------ */
+--topic-technology:var(--indigo-600);--topic-technology-soft:var(--indigo-100);
+--topic-finance:var(--teal-600);--topic-finance-soft:var(--teal-100);
+--topic-politics:var(--clay-600);--topic-politics-soft:var(--clay-100);
+}

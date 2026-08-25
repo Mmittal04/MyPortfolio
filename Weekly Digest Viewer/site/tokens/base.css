@@ -1,0 +1,6 @@
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font:var(--type-body)}
+a{color:var(--text-link);text-decoration-thickness:1px;text-underline-offset:2px;transition:var(--transition-color)}
+a:hover{color:var(--text-link-hover)}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+::selection{background:var(--clay-200)}

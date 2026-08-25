@@ -1,0 +1,13 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Layout widths" subtitle="1120px page max, 720px reading column, 24px gutter" -->
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>body{margin:0;padding:20px;background:var(--surface-page);font-family:var(--font-sans)}
+.sw{display:flex;gap:0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border-hairline)}
+.sw div{flex:1;height:56px;display:flex;align-items:flex-end;padding:6px;font-size:10px;font-weight:600;letter-spacing:.04em}
+.grid{display:grid;gap:10px}
+.mono{font-family:var(--font-mono);font-size:11px;color:var(--text-muted)}
+.name{font-size:11px;font-weight:600;color:var(--text-secondary)}
+</style></head><body><div style="background:var(--surface-card);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:12px">
+<div style="height:14px;background:var(--sand-200);border-radius:2px"></div>
+<div class="mono" style="margin:6px 0 10px">--layout-max 1120px · --layout-gutter 24px</div>
+<div style="width:64%;height:44px;background:var(--clay-100);border:1px dashed var(--clay-300);border-radius:2px"></div>
+<div class="mono" style="margin-top:6px">--layout-reading 720px · prose capped at 66ch</div></div></body></html>

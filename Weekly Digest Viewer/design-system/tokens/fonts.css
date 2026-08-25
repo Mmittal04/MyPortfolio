@@ -1,0 +1,4 @@
+/* Literata (reading serif) + Archivo (UI sans) served from Google Fonts.
+   No font binaries were supplied with the codebase — see readme.md "Font substitution". */
+@import url("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,300..600&family=Archivo:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap");

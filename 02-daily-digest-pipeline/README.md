@@ -2,9 +2,9 @@
 
 Ingests new articles from RSS feeds for one or more topics, summarises each
 one with the Gemini API (free tier) into a structured record (summary, named
-entities, themes), stores it in SQLite, and writes a Markdown digest per
-topic per day. A GitHub Actions workflow runs it on a daily cron schedule
-and commits the results back to the repo.
+entities, themes), stores it in SQLite, and writes a dated Markdown digest
+per topic per run. A GitHub Actions workflow ("Weekly Digest") runs it every
+Sunday at 00:00 UTC and commits the results back to the repo.
 
 **Cost:** this runs entirely on Gemini's free tier (no billing required).
 Default model is `gemini-3.5-flash-lite` (bumped from `gemini-2.5-flash-lite`
@@ -40,8 +40,8 @@ src/store.py           SQLite schema and read/write helpers
 src/digest.py          renders the day's articles into Markdown
 src/main.py            orchestrator (the entry point)
 data/digest.db         SQLite database (created on first run)
-digests/<slug>/<date>.md   daily output per topic
-.github/workflows/daily-digest.yml   cron schedule + commit-back
+digests/<slug>/<date>.md   dated output per topic, one per run
+.github/workflows/daily-digest.yml   weekly cron schedule + commit-back
 ```
 
 ## Ranking
@@ -143,10 +143,10 @@ in the workflow YAML. Instead:
    `secrets.GEMINI_API_KEY`; GitHub injects it as an environment variable
    for that one step only, it's never written to logs or exposed in the
    repo itself.
-5. The workflow runs every day at 12:00 UTC and can also be triggered
-   manually from the Actions tab. It installs dependencies, runs
-   `src/main.py` (all active topics), then commits any new digest files
-   and the updated database back to the repo.
+5. The workflow ("Weekly Digest") runs every Sunday at 00:00 UTC and can
+   also be triggered manually from the Actions tab. It installs
+   dependencies, runs `src/main.py` (all active topics), then commits any
+   new digest files and the updated database back to the repo.
 
 **If the key ever leaks** (accidentally committed, pasted somewhere public,
 etc.): generate a new one in AI Studio, update the GitHub secret and any

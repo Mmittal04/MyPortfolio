@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Weekly Digest — data layer test</title>
+</head>
+<body>
+<!--
+  This is an unstyled integration-test scaffold, not the final design.
+  It exists to (a) prove digest-data.js works end-to-end in a real browser
+  and (b) give Claude Design a working reference for the DOM structure /
+  data-* hooks it can style and enhance. Replace everything in <body> below.
+-->
+
+<div id="tabs"></div>
+<div id="status"></div>
+<div id="panels"></div>
+
+<script type="module">
+  import { TOPICS, loadAllDigests } from './digest-data.js';
+
+  const tabsEl = document.getElementById('tabs');
+  const statusEl = document.getElementById('status');
+  const panelsEl = document.getElementById('panels');
+
+  function renderArticle(article) {
+    const el = document.createElement('article');
+    el.dataset.feedUrl = article.feedUrl ?? '';
+    el.title = article.feedUrl
+      ? `Double-click to open this article's source feed: ${article.feedUrl}`
+      : "No feed URL recorded for this article (from a digest before 25-08-26)";
+    el.innerHTML = `
+      <h3><a href="${article.link}" target="_blank" rel="noopener">${escapeHtml(article.title)}</a></h3>
+      <p>${escapeHtml(article.summary)}</p>
+      <p><strong>Themes:</strong> ${article.themes.map(escapeHtml).join(', ') || '—'}</p>
+      <p><strong>Entities:</strong> ${article.entities.map(escapeHtml).join(', ') || '—'}</p>
+      <p><strong>Source feed:</strong> ${article.feedUrl ? escapeHtml(article.feedUrl) : '—'}</p>
+    `;
+    // Double-click the tile to open its RSS feed in a new tab (GitHub-style
+    // "click the row, double-click to dive in") -- single click on the
+    // title link above still goes straight to the article itself.
+    el.addEventListener('dblclick', () => {
+      if (article.feedUrl) window.open(article.feedUrl, '_blank', 'noopener');
+    });
+    return el;
+  }
+
+  function renderPanel(result) {
+    const panel = document.createElement('div');
+    panel.dataset.panel = result.topic.slug;
+    panel.hidden = true;
+
+    const heading = document.createElement('h2');
+    heading.textContent = `${result.topic.name}${result.runDate ? ' — ' + result.runDate : ''}`;
+    panel.appendChild(heading);
+
+    if (result.status === 'error') {
+      const msg = document.createElement('p');
+      msg.textContent = `Couldn't load this topic: ${result.error.message}`;
+      panel.appendChild(msg);
+    } else if (result.status === 'empty') {
+      const msg = document.createElement('p');
+      msg.textContent = 'No new articles this week.';
+      panel.appendChild(msg);
+    } else {
+      result.articles.forEach((a) => panel.appendChild(renderArticle(a)));
+    }
+    return panel;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function showTab(slug) {
+    panelsEl.querySelectorAll('[data-panel]').forEach((p) => {
+      p.hidden = p.dataset.panel !== slug;
+    });
+    tabsEl.querySelectorAll('button').forEach((b) => {
+      b.setAttribute('aria-selected', String(b.dataset.tab === slug));
+    });
+  }
+
+  async function init() {
+    statusEl.textContent = 'Loading…';
+
+    TOPICS.forEach((t, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = t.name;
+      btn.dataset.tab = t.slug;
+      btn.addEventListener('click', () => showTab(t.slug));
+      tabsEl.appendChild(btn);
+    });
+
+    const digests = await loadAllDigests();
+
+    TOPICS.forEach((t) => {
+      panelsEl.appendChild(renderPanel(digests[t.slug]));
+    });
+
+    showTab(TOPICS[0].slug);
+    statusEl.textContent = '';
+  }
+
+  init();
+</script>
+</body>
+</html>

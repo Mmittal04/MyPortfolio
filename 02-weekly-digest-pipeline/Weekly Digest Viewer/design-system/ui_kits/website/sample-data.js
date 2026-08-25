@@ -1,0 +1,15 @@
+// Stand-in for loadAllDigests(). Same shape as DigestResult in digest-data.js.
+// Content is illustrative — the live site reads real digests from the MyPortfolio repo.
+window.TOPICS=[{slug:'technology',name:'Technology'},{slug:'finance',name:'Finance'},{slug:'politics',name:'Politics'}];
+window.DIGESTS={
+technology:{status:'ready',topic:{slug:'technology',name:'Technology'},runDate:'2026-08-24',error:null,articles:[
+{title:'Open-weight models close the gap on reasoning benchmarks',link:'#',summary:'Two open-weight releases posted scores within a few points of the leading closed models on public reasoning suites, at roughly a tenth of the inference cost. Independent evaluations are still pending.',themes:['open models','benchmarks'],entities:['Meta','Mistral','Hugging Face']},
+{title:'Chip supply loosens as new packaging capacity comes online',link:'#',summary:'Advanced packaging lines that had bottlenecked accelerator output through the spring reached volume this month, easing lead times for datacentre buyers from nine months to five.',themes:['semiconductors','supply chain'],entities:['TSMC','Nvidia']},
+{title:'Browser vendors agree on a shared extension manifest',link:'#',summary:'A working group published a common manifest format, ending three years of divergence. Existing extensions get a two-year migration window.',themes:['standards','browsers'],entities:['W3C','Google','Mozilla']}]},
+finance:{status:'ready',topic:{slug:'finance',name:'Finance'},runDate:'2026-08-25',error:null,articles:[
+{title:'Central banks hold rates steady as inflation cools',link:'#',summary:'Three major central banks left policy unchanged this week, citing a slower but still-uneven decline in core inflation. Guidance pointed to a first cut late in the year rather than at the next meeting.',themes:['interest rates','inflation'],entities:['Federal Reserve','ECB','Bank of Japan']},
+{title:'Private credit funds face their first real test',link:'#',summary:'Default rates in mid-market lending ticked above their five-year average for the first time since the sector\u2019s expansion began, drawing supervisory attention.',themes:['private credit','risk'],entities:['BIS','Blackstone']},
+{title:'Retail earnings split along price tiers',link:'#',summary:'Discount chains beat expectations while mid-tier apparel guided down, a divergence analysts read as continued trading-down by middle-income households.',themes:['earnings','consumer'],entities:['Walmart','Target']},
+{title:'Bond markets price a slower easing cycle',link:'#',summary:'Two-year yields rose eight basis points on the week as futures pushed the expected first cut into the fourth quarter.',themes:['bonds'],entities:['US Treasury']}]},
+politics:{status:'empty',topic:{slug:'politics',name:'Politics'},runDate:'2026-08-25',error:null,articles:[]}};
+window.ERROR_SAMPLE={status:'error',topic:{slug:'politics',name:'Politics'},runDate:null,articles:[],error:{kind:'rate_limited',message:'GitHub API rate limit hit, resets at 4:15:00 PM.'}};

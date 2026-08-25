@@ -1,13 +1,13 @@
-"""Render a topic's articles for a given day into a Markdown digest file."""
+"""Render a topic's articles for a given run into a Markdown digest file."""
 
 from pathlib import Path
 
 from jinja2 import Template
 
-DIGEST_TEMPLATE = """# {{ topic_name }} — Daily Digest — {{ run_date }}
+DIGEST_TEMPLATE = """# {{ topic_name }} — Weekly Digest — {{ run_date }}
 
 {% if articles %}
-{{ articles|length }} new article(s) today.
+{{ articles|length }} new article(s) this week.
 
 {% for a in articles %}
 ## [{{ a.title }}]({{ a.link }})
@@ -20,7 +20,7 @@ DIGEST_TEMPLATE = """# {{ topic_name }} — Daily Digest — {{ run_date }}
 ---
 {% endfor %}
 {% else %}
-No new articles for this topic today.
+No new articles for this topic this week.
 {% endif %}
 """
 

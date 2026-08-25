@@ -1,4 +1,4 @@
-"""SQLite persistence layer for the daily digest pipeline.
+"""SQLite persistence layer for the weekly digest pipeline.
 
 Schema:
 - articles:    one row per ingested article, keyed by a hash of its link.

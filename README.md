@@ -1,4 +1,4 @@
-# Daily Digest Pipeline
+# Weekly Digest Pipeline
 
 Ingests new articles from RSS feeds for one or more topics, summarises each
 one with the Gemini API (free tier) into a structured record (summary, named
@@ -41,7 +41,7 @@ src/digest.py          renders the day's articles into Markdown
 src/main.py            orchestrator (the entry point)
 data/digest.db         SQLite database (created on first run)
 digests/<slug>/<date>.md   dated output per topic, one per run
-.github/workflows/daily-digest.yml   weekly cron schedule + commit-back
+.github/workflows/weekly-digest.yml   weekly cron schedule + commit-back
 ```
 
 ## Ranking
@@ -139,7 +139,7 @@ in the workflow YAML. Instead:
 2. In the repo, go to Settings → Secrets and variables → Actions → New
    repository secret.
 3. Name it `GEMINI_API_KEY` and paste the key value in, then save.
-4. The workflow at `.github/workflows/daily-digest.yml` already references
+4. The workflow at `.github/workflows/weekly-digest.yml` already references
    `secrets.GEMINI_API_KEY`; GitHub injects it as an environment variable
    for that one step only, it's never written to logs or exposed in the
    repo itself.
@@ -182,7 +182,10 @@ Technology feed list was reviewed (see `config/topics.yaml` comments).
   `rank.py` selects out of the pending pool each run, see "Ranking" above.
   Rejected candidates are marked as such immediately rather than retried,
   so a large backlog clears in one run rather than trickling through over
-  several days.
+  several runs. At a weekly cadence this means 10 articles/topic/week
+  covering everything published since the last run, not everything
+  worth reading -- a real drop in coverage volume versus daily, a direct
+  consequence of the schedule change, not a bug.
 - This repo's existing `data/digest.db` had 82 rows from a run before the
   ranking step, the `failed` status, and the improved error surfacing all
   existed, 20 of them recorded as `(summarisation failed)` with no real
@@ -194,8 +197,22 @@ Technology feed list was reviewed (see `config/topics.yaml` comments).
   will include the actual exception rather than a generic placeholder.
 - No retry/backoff on rate-limit errors (HTTP 429) specifically yet; a
   request that gets rate-limited currently falls back to the generic
-  placeholder-on-failure path rather than waiting and retrying. Worth
-  revisiting now that three topics run per day instead of one.
+  placeholder-on-failure path rather than waiting and retrying. Less
+  pressing now that the pipeline runs weekly rather than daily -- more
+  time between runs means less chance of back-to-back requests actually
+  hitting a rate limit -- but still worth fixing properly at some point.
+- **RSS feeds are rolling windows, not full history** -- a real risk
+  introduced by the daily-to-weekly schedule change (25-08-26). Most feeds
+  here only keep their most recent ~20-60 entries; a high-volume source
+  (BBC, Al Jazeera, TechCrunch) can cycle through that whole window
+  several times over in a week, meaning an article published early in the
+  week can fall off the feed before a once-a-week fetch ever sees it --
+  `ingest.py` has no way to recover something that's already gone from
+  the feed. Watch for weekly `new article(s) fetched` counts that look
+  low relative to a feed's normal publishing volume; if this turns out to
+  matter in practice, the real fix is decoupling ingestion cadence from
+  digest-generation cadence (poll feeds more often, only rank/summarise/
+  publish weekly), not something a cron-schedule change alone can fix.
 - `ingest.py` sends an explicit browser-style User-Agent on every feed
   fetch (25-08-26 fix). feedparser's default UA
   (`feedparser/6.x +https://github.com/...`) got a flat 403 from

@@ -13,7 +13,7 @@ import sys
 
 DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
-RANK_PROMPT_TEMPLATE = """You are curating a daily {topic_name} digest. Below is a \
+RANK_PROMPT_TEMPLATE = """You are curating a weekly {topic_name} digest. Below is a \
 numbered list of candidate article titles and short excerpts. Select the \
 {top_n} most worth including.
 

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-d26b77aa-dada-4304-a08b-7ecbd36610b8/styles.css">
+<script src="_ds/classical-d26b77aa-dada-4304-a08b-7ecbd36610b8/_ds_bundle.js"></script>
+<link rel="stylesheet" href="_ds/weekly-digest-design-system-6fb44143-f6a7-4fe2-9ea4-e8591cb4b923/tokens/colors.css">
+<script src="_ds/weekly-digest-design-system-6fb44143-f6a7-4fe2-9ea4-e8591cb4b923/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+a{color:var(--color-text);text-decoration:none}
+a:hover{color:var(--color-accent-700)}
+*{box-sizing:border-box}
+:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+</style>
+</helmet>
+
+<div style="{{ rootStyle }}">
+<div style="min-height:100vh;background:var(--pg-hero);font-family:var(--font-body)">
+
+<div style="position:sticky;top:0;z-index:20;display:flex;justify-content:center;padding:18px 24px;background:linear-gradient(var(--pg-hero) 62%,transparent)">
+<div style="display:flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid var(--pg-rule);border-radius:999px;background:var(--pg-navbg);box-shadow:var(--shadow-sm)">
+<span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;margin-right:4px;border:1px solid var(--pg-line);border-radius:999px;font-family:var(--font-heading);font-size:13px;letter-spacing:.02em;color:var(--pg-aink);font-feature-settings:'tnum'">MM</span>
+<button type="button" onClick="{{ goAbout }}" style="{{ tabAbout }}">About</button>
+<button type="button" onClick="{{ goProjects }}" style="{{ tabProjects }}">Projects</button>
+<button type="button" onClick="{{ goResume }}" style="{{ tabResume }}">Resume</button>
+</div>
+</div>
+
+<header style="position:relative;max-width:1120px;margin:0 auto;padding:70px 40px 86px;overflow:hidden">
+<div style="position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:24px">
+<img src="assets/profile.jpg" alt="Maan Mittal" style="width:54px;height:54px;border-radius:999px;object-fit:cover;border:1px solid var(--pg-rule);background:var(--pg-chip);padding:3px">
+<h1 style="margin:0;font-family:var(--font-heading);font-weight:400;font-size:clamp(3.1rem,6.2vw,5.1rem);line-height:.97;letter-spacing:-.02em">Hello, I&#39;m Maan!</h1>
+<div style="display:flex;flex-direction:column;gap:11px;padding-top:14px;border-top:1px solid var(--pg-rule)">
+<div style="display:flex;align-items:center;gap:10px;font-size:.95rem;color:var(--color-neutral-700)">
+<svg viewBox="0 0 24 24" style="width:16px;height:16px;flex:none;stroke:var(--pg-line);fill:none;stroke-width:1.6"><path d="M22 10 12 5 2 10l10 5 10-5Z"></path><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"></path></svg>
+Economics and Data Analytics, University of Manchester
+</div>
+<div style="display:flex;align-items:center;gap:10px;font-size:.95rem;color:var(--color-neutral-700)">
+<svg viewBox="0 0 24 24" style="width:16px;height:16px;flex:none;stroke:var(--pg-line);fill:none;stroke-width:1.6"><path d="M20 10c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="2.8"></circle></svg>
+Manchester, UK
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:28px;padding-top:10px">
+<p style="margin:0;font-size:1.18rem;line-height:1.62;color:var(--color-neutral-800);text-align:justify;hyphens:auto;text-wrap:pretty">Always tinkering with systems and products that could work better. And endlessly curious about why people do what they do and what the numbers have to say about it. Take a look at a few of the projects below, and say hi if something catches your eye.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<a href="mailto:maanmittal04@gmail.com" style="display:inline-flex;align-items:center;gap:9px;padding:11px 22px;border:1px solid var(--pg-line);border-radius:999px;font-size:.92rem;color:var(--pg-aink);background:transparent" style-hover="background:var(--pg-tint);border-color:var(--pg-line)">
+<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 6 10 7 10-7"></path></svg>
+Email me
+</a>
+<a href="https://www.linkedin.com/in/maanmittal" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;padding:11px 22px;border:1px solid var(--pg-rule);border-radius:999px;font-size:.92rem;color:var(--color-text);background:var(--pg-chip)" style-hover="border-color:var(--pg-line)">
+<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6"><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle><path d="M10 21v-7a3 3 0 0 1 6 0v7M10 9v12"></path></svg>
+LinkedIn
+</a>
+</div>
+</div>
+</div>
+</header>
+
+<main style="border-top:1px solid var(--pg-rule);background:var(--pg-band)">
+<div style="max-width:1120px;margin:0 auto;padding:76px 40px 110px">
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:0">
+
+<div style="display:grid;grid-template-columns:240px 1fr;gap:56px;padding-bottom:52px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="width:26px;height:1px;background:var(--pg-line)"></div>
+<div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--pg-label)">About</div>
+</div>
+<p style="margin:0;max-width:66ch;font-size:1.06rem;line-height:1.72;color:var(--color-neutral-800);text-align:justify;hyphens:auto">I&#39;m a third-year Economics and Data Analytics student at the University of Manchester. Most of my work sits at the intersection of research and strategy. Outside coursework, I help run my university&#39;s open-data and reproducibility community, and I build interesting projects to keep learning by shipping something real. Previously interned at Pratham India and Ditchley Foundation.</p>
+</div>
+
+<div style="display:grid;grid-template-columns:240px 1fr;gap:56px;padding-top:52px;border-top:1px solid var(--pg-rule)">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="width:26px;height:1px;background:var(--pg-line)"></div>
+<div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--pg-label)">Skills</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:var(--font-heading);font-size:1.24rem;font-style:italic;color:var(--color-text)">Languages</div>
+<div style="display:flex;flex-wrap:wrap;gap:9px">
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">English — fluent</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Hindi — fluent</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:var(--font-heading);font-size:1.24rem;font-style:italic;color:var(--color-text)">Tools</div>
+<div style="display:flex;flex-wrap:wrap;gap:9px">
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">R</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Python</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">SQL / MySQL</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Tableau</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Neo4j / Cypher</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Excel</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">PowerPoint</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Figma</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Miro</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">Canva</span>
+<span style="padding:7px 15px;border:1px solid var(--pg-rule);border-radius:var(--radius-md);background:var(--pg-chip);font-size:.88rem;color:var(--color-neutral-800)">GitHub</span>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isProjects }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:240px 1fr;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="width:26px;height:1px;background:var(--pg-line)"></div>
+<div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--pg-label)">Selected work</div>
+<a href="https://github.com/Mmittal04" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:6px;font-size:.86rem;color:var(--color-neutral-700)">
+<svg viewBox="0 0 24 24" style="width:15px;height:15px;flex:none;fill:currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.4 9.4 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .26.18.58.69.48A10 10 0 0 0 12 2Z"></path></svg>
+github.com/Mmittal04
+</a>
+</div>
+
+<div style="display:flex;flex-direction:column">
+
+<div style="display:grid;grid-template-columns:56px 1fr;gap:24px;padding-bottom:44px">
+<div style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;border:1px solid var(--pg-line);border-radius:999px;background:transparent;font-family:var(--font-heading);font-size:1.15rem;color:var(--pg-aink);font-feature-settings:'tnum'">01</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-family:var(--font-heading);font-weight:400;font-size:2rem;line-height:1.1;letter-spacing:-.01em">Analysing Movie Ratings</h2>
+<div style="font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;color:var(--pg-label)">R · web scraping</div>
+<p style="margin:6px 0 0;max-width:60ch;font-size:1rem;line-height:1.7;color:var(--color-neutral-800);text-align:justify;hyphens:auto">An introductory project scraping and analysing movie rating data, built for a SOSS peer workshop on R and web-scraping fundamentals.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
+<a href="https://github.com/Mmittal04/MyPortfolio/tree/main/01-analysing-movie-ratings" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1px solid var(--pg-rule);border-radius:999px;font-size:.87rem;background:var(--pg-chip)" style-hover="border-color:var(--pg-line);color:var(--pg-aink)">Source on GitHub →</a>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:56px 1fr;gap:24px;padding-top:44px;border-top:1px solid var(--pg-rule)">
+<div style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;border:1px solid var(--pg-line);border-radius:999px;background:transparent;font-family:var(--font-heading);font-size:1.15rem;color:var(--pg-aink);font-feature-settings:'tnum'">02</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-family:var(--font-heading);font-weight:400;font-size:2rem;line-height:1.1;letter-spacing:-.01em">Weekly Digest Viewer</h2>
+<div style="font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;color:var(--pg-label)">Python · GitHub Actions · Gemini API · JavaScript</div>
+<p style="margin:6px 0 0;max-width:60ch;font-size:1rem;line-height:1.7;color:var(--color-neutral-800);text-align:justify;hyphens:auto">An automated pipeline that ingests RSS feeds across three topics every week, ranks and summarises the coverage with the Gemini API, and publishes the results as a live, tabbed reader site.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
+<a href="02-weekly-digest-pipeline/Weekly%20Digest%20Viewer/site/" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1px solid var(--pg-line);border-radius:999px;font-size:.87rem;color:var(--pg-aink)" style-hover="background:var(--pg-tint);border-color:var(--pg-line)">View live site →</a>
+<a href="https://github.com/Mmittal04/MyPortfolio/tree/main/02-weekly-digest-pipeline" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1px solid var(--pg-rule);border-radius:999px;font-size:.87rem;background:var(--pg-chip)" style-hover="border-color:var(--pg-line);color:var(--pg-aink)">Source on GitHub →</a>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isResume }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:240px 1fr;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="width:26px;height:1px;background:var(--pg-line)"></div>
+<div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--pg-label)">Resume</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:22px">
+<a href="assets/resume.pdf" download style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;padding:11px 22px;border:1px solid var(--pg-line);border-radius:999px;font-size:.92rem;color:var(--pg-aink)" style-hover="background:var(--pg-tint);border-color:var(--pg-line)">
+<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6"><path d="M12 3v13m0 0 5-5m-5 5-5-5"></path><path d="M4 20h16"></path></svg>
+Download resume
+</a>
+<div style="padding:6px;border:1px solid var(--pg-rule);border-radius:var(--radius-lg);background:var(--pg-chip)">
+<object data="assets/resume.pdf" type="application/pdf" style="display:block;width:100%;height:78vh;border-radius:var(--radius-md);background:var(--pg-chip)">
+<p style="margin:0;padding:40px;text-align:center;color:var(--color-neutral-700)">Your browser can&#39;t display the resume inline. <a href="assets/resume.pdf" style="color:var(--pg-aink);text-decoration:underline">Download it here.</a></p>
+</object>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</main>
+
+<footer style="border-top:1px solid var(--pg-rule);background:var(--pg-footbg)">
+<div style="max-width:1120px;margin:0 auto;padding:34px 40px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.82rem;color:var(--pg-footink)">
+<span>Maan Mittal — Manchester, UK</span>
+<span style="font-feature-settings:'tnum'">github.com/Mmittal04</span>
+</div>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;scheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Sand &amp; clay&quot;,&quot;Sand &amp; indigo&quot;,&quot;Sand &amp; teal&quot;,&quot;Warm ochre&quot;,&quot;Paper grey&quot;],&quot;default&quot;:&quot;Sand &amp; clay&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Style&quot;}}">
+const SCHEMES = {
+  'Sand & clay': {
+    '--pg-hero': 'var(--sand-50)', '--pg-band': 'var(--sand-100)', '--pg-rule': 'var(--border-hairline)',
+    '--pg-chip': 'var(--surface-card)', '--pg-navbg': 'var(--surface-card)', '--pg-label': 'var(--clay-600)',
+    '--pg-line': 'var(--clay-600)', '--pg-tint': 'var(--clay-100)', '--pg-aink': 'var(--clay-700)',
+    '--pg-footbg': 'var(--sand-900)', '--pg-footink': 'var(--sand-300)'
+  },
+  'Sand & indigo': {
+    '--pg-hero': 'var(--sand-50)', '--pg-band': 'var(--sand-100)', '--pg-rule': 'var(--border-hairline)',
+    '--pg-chip': 'var(--surface-card)', '--pg-navbg': 'var(--surface-card)', '--pg-label': 'var(--indigo-600)',
+    '--pg-line': 'var(--indigo-600)', '--pg-tint': 'var(--indigo-100)', '--pg-aink': 'var(--indigo-700)',
+    '--pg-footbg': 'var(--sand-900)', '--pg-footink': 'var(--sand-300)'
+  },
+  'Sand & teal': {
+    '--pg-hero': 'var(--sand-50)', '--pg-band': 'var(--sand-100)', '--pg-rule': 'var(--border-hairline)',
+    '--pg-chip': 'var(--surface-card)', '--pg-navbg': 'var(--surface-card)', '--pg-label': 'var(--teal-600)',
+    '--pg-line': 'var(--teal-600)', '--pg-tint': 'var(--teal-100)', '--pg-aink': 'var(--teal-700)',
+    '--pg-footbg': 'var(--sand-900)', '--pg-footink': 'var(--sand-300)'
+  },
+  'Warm ochre': {
+    '--pg-hero': 'var(--color-accent-100)', '--pg-band': 'var(--color-bg)',
+    '--pg-rule': 'color-mix(in srgb, var(--color-accent) 34%, transparent)',
+    '--pg-chip': 'var(--color-accent-100)', '--pg-navbg': 'var(--color-accent-100)',
+    '--pg-label': 'var(--color-accent-700)', '--pg-line': 'var(--color-accent)',
+    '--pg-tint': 'var(--color-accent-100)', '--pg-aink': 'var(--color-accent-700)',
+    '--pg-footbg': 'var(--color-neutral-900)', '--pg-footink': 'var(--color-accent-300)'
+  },
+  'Paper grey': {
+    '--pg-hero': 'var(--color-bg)', '--pg-band': 'var(--color-neutral-100)',
+    '--pg-rule': 'var(--color-divider)', '--pg-chip': 'var(--color-bg)',
+    '--pg-navbg': 'var(--color-neutral-100)', '--pg-label': 'var(--color-neutral-600)',
+    '--pg-line': 'var(--color-accent)', '--pg-tint': 'var(--color-accent-100)',
+    '--pg-aink': 'var(--color-accent-700)',
+    '--pg-footbg': 'var(--color-bg)', '--pg-footink': 'var(--color-neutral-600)'
+  }
+};
+
+class Component extends DCLogic {
+  state = { tab: 'about' };
+  tabStyle(name) {
+    const on = this.state.tab === name;
+    return {
+      appearance: 'none', cursor: 'pointer', font: 'inherit', fontSize: '.92rem',
+      padding: '9px 20px', borderRadius: '999px', transition: 'background .16s,color .16s',
+      border: on ? '1px solid var(--color-neutral-900)' : '1px solid transparent',
+      background: on ? 'var(--color-neutral-900)' : 'transparent',
+      color: on ? 'var(--color-neutral-100)' : 'var(--color-neutral-700)'
+    };
+  }
+  go(tab) { return () => this.setState({ tab }); }
+  renderVals() {
+    const scheme = SCHEMES[this.props.scheme] || SCHEMES['Sand & clay'];
+    const sketch = (this.props.showSketch ?? true) ? 'flex' : 'none';
+    return {
+      rootStyle: Object.assign({}, scheme, { '--pg-sketch': sketch }),
+      isAbout: this.state.tab === 'about',
+      isProjects: this.state.tab === 'projects',
+      isResume: this.state.tab === 'resume',
+      tabAbout: this.tabStyle('about'),
+      tabProjects: this.tabStyle('projects'),
+      tabResume: this.tabStyle('resume'),
+      goAbout: this.go('about'),
+      goProjects: this.go('projects'),
+      goResume: this.go('resume')
+    };
+  }
+}
+</script>
+</body>
+</html>

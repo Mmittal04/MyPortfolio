@@ -7,259 +7,334 @@
 <meta name="description" content="Maan Mittal — Economics &amp; Data Analytics student at the University of Manchester. Research, data analysis, and automation projects.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lora:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  /* Resolved from the "Classical" design system + the "Sand & clay" scheme
+     (Portfolio redesign request.zip, 27-08-26) -- concrete values, no
+     runtime dependency on the design-system bundle files. */
   :root{
-    --ink:#181a1f;
-    --ink-soft:#4a4e58;
-    --ink-faint:#8a8d97;
-    --paper:#faf9f7;
-    --surface:#ffffff;
-    --line:#e7e4de;
-    --accent:#2c3e6b;
-    --accent-soft:#eef1f8;
-    --radius:10px;
-    --measure:680px;
+    --ink:#201f1d;
+    --ink-700:#605d5d;
+    --ink-800:#444141;
+    --ink-900:#2d2b2b;
+    --ink-100:#f8f4f4;
+    --hero:#FCF9F4;
+    --band:#F6F1E8;
+    --rule:rgba(28,25,19,.08);
+    --chip:#FFFDFA;
+    --label:#9E4A2E;
+    --line:#9E4A2E;
+    --tint:#F8E9E0;
+    --aink:#833C22;
+    --footbg:#1C1913;
+    --footink:#DED3C2;
+    --font-heading:'Cormorant Garamond',Georgia,serif;
+    --font-body:'Lora',Georgia,serif;
+    --radius-md:4px;
+    --radius-lg:7px;
+    --shadow-sm:0 1px 2px rgba(45,43,43,.14);
   }
   *{box-sizing:border-box}
   body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    margin:0;background:var(--hero);color:var(--ink);
+    font-family:var(--font-body);-webkit-font-smoothing:antialiased;
   }
-  a{color:var(--ink)}
-  a:hover{color:var(--accent)}
-  .wrap{max-width:var(--measure);margin:0 auto;padding:0 24px}
-  svg.icon{width:16px;height:16px;flex:0 0 auto;stroke:currentColor;fill:none;stroke-width:1.7}
+  a{color:var(--ink);text-decoration:none}
+  a:hover{color:var(--aink)}
+  :focus-visible{outline:2px solid var(--line);outline-offset:2px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 40px}
 
-  /* ---------- static header ---------- */
-  header.hero{padding:88px 0 0}
-  .who{display:flex;align-items:center;gap:16px;margin-bottom:22px}
-  .avatar{
-    width:56px;height:56px;border-radius:50%;object-fit:cover;
-    border:1px solid var(--line);background:var(--surface);flex:0 0 auto;
+  /* ---------- nav pill ---------- */
+  nav.pillbar{
+    position:sticky;top:0;z-index:20;display:flex;justify-content:center;
+    padding:18px 24px;background:linear-gradient(var(--hero) 62%, transparent);
   }
+  .pill-shell{
+    display:flex;align-items:center;gap:6px;padding:7px 9px;
+    border:1px solid var(--rule);border-radius:999px;background:var(--chip);
+    box-shadow:var(--shadow-sm);
+  }
+  .monogram{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;margin-right:4px;border:1px solid var(--line);
+    border-radius:999px;font-family:var(--font-heading);font-size:13px;
+    letter-spacing:.02em;color:var(--aink);font-feature-settings:'tnum';
+  }
+  nav.pillbar button{
+    appearance:none;cursor:pointer;font:inherit;font-size:.92rem;
+    padding:9px 20px;border-radius:999px;transition:background .16s,color .16s;
+    border:1px solid transparent;background:transparent;color:var(--ink-700);
+  }
+  nav.pillbar button[aria-selected="true"]{
+    border-color:var(--ink-900);background:var(--ink-900);color:var(--ink-100);
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{position:relative;max-width:1120px;margin:0 auto;padding:70px 40px 86px;overflow:hidden}
+  .hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:start}
+  .hero-left{display:flex;flex-direction:column;gap:24px}
+  .avatar{width:54px;height:54px;border-radius:999px;object-fit:cover;border:1px solid var(--rule);background:var(--chip);padding:3px}
   h1.name{
-    font-family:'Fraunces',Georgia,serif;
-    font-weight:500;
-    font-size:clamp(2.1rem, 4.4vw, 2.9rem);
-    line-height:1.1;
-    letter-spacing:-.01em;
-    margin:0;
-    color:var(--ink);
+    margin:0;font-family:var(--font-heading);font-weight:400;
+    font-size:clamp(3.1rem,6.2vw,5.1rem);line-height:.97;letter-spacing:-.02em;
   }
-  .meta-lines{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
-  .meta-line{display:flex;align-items:center;gap:9px;color:var(--ink-soft);font-size:.94rem}
-  .meta-line svg.icon{color:var(--ink-faint)}
+  .meta-lines{display:flex;flex-direction:column;gap:11px;padding-top:14px;border-top:1px solid var(--rule)}
+  .meta-line{display:flex;align-items:center;gap:10px;font-size:.95rem;color:var(--ink-700)}
+  .meta-line svg{width:16px;height:16px;flex:none;stroke:var(--line);fill:none;stroke-width:1.6}
+
+  .hero-right{display:flex;flex-direction:column;gap:28px;padding-top:10px}
   p.tagline{
-    font-size:1.1rem;
-    color:var(--ink-soft);
-    max-width:58ch;
-    margin:0 0 40px;
+    margin:0;font-size:1.18rem;line-height:1.62;color:var(--ink-800);
+    text-align:justify;hyphens:auto;
   }
-
-  /* ---------- tabs ---------- */
-  nav.tabs{display:flex;gap:28px;border-bottom:1px solid var(--line);margin-bottom:40px}
-  nav.tabs button{
-    appearance:none;background:none;border:0;cursor:pointer;
-    padding:0 0 14px;font-family:inherit;font-size:.95rem;font-weight:600;
-    color:var(--ink-faint);border-bottom:2px solid transparent;
-    margin-bottom:-1px;transition:color .15s;
+  .pill-row{display:flex;flex-wrap:wrap;gap:12px}
+  .pill-btn{
+    display:inline-flex;align-items:center;gap:9px;padding:11px 22px;
+    border-radius:999px;font-size:.92rem;transition:background .15s,border-color .15s;
   }
-  nav.tabs button:hover{color:var(--ink)}
-  nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+  .pill-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6}
+  .pill-outline{border:1px solid var(--line);color:var(--aink);background:transparent}
+  .pill-outline:hover{background:var(--tint);border-color:var(--line);color:var(--aink)}
+  .pill-solid{border:1px solid var(--rule);color:var(--ink);background:var(--chip)}
+  .pill-solid:hover{border-color:var(--line);color:var(--ink)}
 
-  main.wrap{padding:0 24px 96px}
+  /* ---------- main / tab content ---------- */
+  main{border-top:1px solid var(--rule);background:var(--band)}
+  .main-inner{max-width:1120px;margin:0 auto;padding:76px 40px 110px}
   .panel{display:none}
   .panel.active{display:block}
 
-  /* ---------- about panel ---------- */
-  p.about{font-size:1.05rem;color:var(--ink-soft);max-width:64ch;margin:0 0 40px}
+  .band-row{display:grid;grid-template-columns:240px 1fr;gap:56px}
+  .band-label{display:flex;flex-direction:column;gap:12px}
+  .band-rule{width:26px;height:1px;background:var(--line)}
+  .band-kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--label)}
+  .gh-link{display:inline-flex;align-items:center;gap:8px;margin-top:6px;font-size:.86rem;color:var(--ink-700)}
+  .gh-link svg{width:15px;height:15px;flex:none;fill:currentColor}
 
-  .block-label{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
-  .skills-block{margin-bottom:36px}
-  .skills-group{margin-bottom:16px}
-  .skills-group:last-child{margin-bottom:0}
-  .skills-sub{font-size:.75rem;font-weight:600;color:var(--ink-faint);margin-bottom:8px}
-  .tag-row{display:flex;flex-wrap:wrap;gap:8px}
-  .tag{
-    padding:6px 12px;border-radius:7px;background:var(--surface);border:1px solid var(--line);
-    font-size:.88rem;color:var(--ink-soft);font-weight:500;
-  }
+  p.band-copy{margin:0;max-width:66ch;font-size:1.06rem;line-height:1.72;color:var(--ink-800);text-align:justify;hyphens:auto}
 
-  .contact-block .tag-row{gap:10px}
-  .contact-pill{
-    display:inline-flex;align-items:center;gap:7px;
-    padding:8px 16px;border-radius:999px;
-    font-size:.9rem;font-weight:500;text-decoration:none;
-    border:1px solid var(--line);background:var(--surface);color:var(--ink);
-    transition:border-color .15s, background .15s;
-  }
-  .contact-pill:hover{border-color:var(--ink);background:var(--accent-soft);color:var(--ink)}
+  .about-block + .about-block{padding-top:52px;border-top:1px solid var(--rule)}
+  .about-block{padding-bottom:52px}
+  .about-block:last-child{padding-bottom:0}
 
-  /* ---------- projects panel ---------- */
-  .projects-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-  .gh-corner{
-    display:inline-flex;align-items:center;gap:7px;color:var(--ink-soft);
-    text-decoration:none;font-size:.88rem;font-weight:600;
-  }
-  .gh-corner:hover{color:var(--ink)}
-  .project-card{
-    border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
-    padding:26px 28px;margin-bottom:20px;
-  }
-  .project-card:last-child{margin-bottom:0}
-  .project-title{font-weight:600;font-size:1.12rem;margin:0}
-  .project-stack{font-size:.82rem;color:var(--ink-faint);font-weight:600;margin:4px 0 12px}
-  .project-desc{color:var(--ink-soft);margin:0 0 16px}
-  .project-links{display:flex;gap:18px;flex-wrap:wrap}
-  .project-links a{font-size:.88rem;font-weight:600;text-decoration:none;color:var(--ink)}
-  .project-links a:hover{color:var(--accent);text-decoration:underline}
+  .skills-groups{display:flex;flex-direction:column;gap:30px}
+  .skills-heading{font-family:var(--font-heading);font-size:1.24rem;font-style:italic;color:var(--ink)}
+  .tag-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+  .tag{padding:7px 15px;border:1px solid var(--rule);border-radius:var(--radius-md);background:var(--chip);font-size:.88rem;color:var(--ink-800)}
 
-  /* ---------- resume panel ---------- */
-  .resume-download{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:10px 20px;border-radius:8px;
-    background:var(--ink);color:#fff;text-decoration:none;
-    font-size:.92rem;font-weight:600;margin-bottom:20px;
+  /* ---------- projects ---------- */
+  .project-entry{display:grid;grid-template-columns:56px 1fr;gap:24px;padding-bottom:44px}
+  .project-entry + .project-entry{padding-top:44px;border-top:1px solid var(--rule)}
+  .project-badge{
+    display:flex;align-items:center;justify-content:center;width:52px;height:52px;
+    border:1px solid var(--line);border-radius:999px;font-family:var(--font-heading);
+    font-size:1.15rem;color:var(--aink);font-feature-settings:'tnum';
   }
-  .resume-download:hover{background:var(--accent);color:#fff}
-  .resume-embed{
-    width:100%;height:82vh;border:1px solid var(--line);border-radius:var(--radius);
-    background:var(--surface);
+  .project-body{display:flex;flex-direction:column;gap:10px}
+  h2.project-title{margin:0;font-family:var(--font-heading);font-weight:400;font-size:2rem;line-height:1.1;letter-spacing:-.01em}
+  .project-stack{font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;color:var(--label)}
+  p.project-desc{margin:6px 0 0;max-width:60ch;font-size:1rem;line-height:1.7;color:var(--ink-800);text-align:justify;hyphens:auto}
+  .project-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+  .chip-btn{
+    display:inline-flex;align-items:center;gap:8px;padding:9px 18px;
+    border:1px solid var(--rule);border-radius:999px;font-size:.87rem;background:var(--chip);
+    transition:border-color .15s,color .15s;
   }
+  .chip-btn:hover{border-color:var(--line);color:var(--aink)}
+  .chip-btn.outline{border:1px solid var(--line);background:transparent;color:var(--aink)}
+  .chip-btn.outline:hover{background:var(--tint)}
 
-  @media (max-width:600px){
-    header.hero{padding:56px 0 0}
-    main.wrap{padding:0 24px 56px}
-    nav.tabs{margin-bottom:28px}
-    nav.tabs{gap:20px}
-    .resume-embed{height:70vh}
+  /* ---------- resume ---------- */
+  .resume-col{display:flex;flex-direction:column;gap:22px}
+  .resume-frame{padding:6px;border:1px solid var(--rule);border-radius:var(--radius-lg);background:var(--chip)}
+  .resume-embed{display:block;width:100%;height:78vh;border-radius:var(--radius-md);background:var(--chip);border:0}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--rule);background:var(--footbg)}
+  .footer-inner{
+    max-width:1120px;margin:0 auto;padding:34px 40px;
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    font-size:.82rem;color:var(--footink);
+  }
+  .footer-inner span:last-child{font-feature-settings:'tnum'}
+
+  @media (max-width:760px){
+    .wrap, header.hero, .main-inner, .footer-inner{padding-left:20px;padding-right:20px}
+    .hero-grid{grid-template-columns:1fr;gap:32px}
+    header.hero{padding:48px 20px 56px}
+    .band-row, .project-entry{grid-template-columns:1fr}
+    .band-label{flex-direction:row;align-items:center;gap:10px}
+    .band-rule{width:16px}
+    .project-badge{width:40px;height:40px;font-size:1rem}
+    h1.name{font-size:2.6rem}
+    .main-inner{padding:48px 20px 72px}
   }
 </style>
 </head>
 <body>
 
-<header class="hero wrap">
-  <div class="who">
-    <img class="avatar" src="assets/profile.jpg" alt="Maan Mittal" onerror="this.style.display='none'">
-    <h1 class="name">Hello, I'm Maan!</h1>
+<nav class="pillbar">
+  <div class="pill-shell" role="tablist">
+    <span class="monogram">MM</span>
+    <button type="button" role="tab" aria-selected="true" data-tab="about">About</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="projects">Projects</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="resume">Resume</button>
   </div>
-  <div class="meta-lines">
-    <div class="meta-line">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
-      Economics and Data Analytics, University of Manchester
-    </div>
-    <div class="meta-line">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M20 10c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.8"/></svg>
-      Manchester, UK
-    </div>
-  </div>
-  <p class="tagline">Always tinkering with systems and products that could work better. And endlessly
-    curious about why people do what they do and what the numbers have to say about it. Take a look at
-    a few of the projects below, and say hi if something catches your eye.</p>
+</nav>
 
-  <nav class="tabs" role="tablist">
-    <button role="tab" aria-selected="true" data-tab="about">About</button>
-    <button role="tab" aria-selected="false" data-tab="projects">Projects</button>
-    <button role="tab" aria-selected="false" data-tab="resume">Resume</button>
-  </nav>
-</header>
-
-<main class="wrap">
-
-  <section class="panel active" id="panel-about">
-    <p class="about">I'm a third-year Economics and Data Analytics student at the University of
-      Manchester. Most of my work sits at the intersection of research and strategy. Outside coursework,
-      I help run my university's open-data and reproducibility community, and I build interesting
-      projects to keep learning by shipping something real. Previously interned at Pratham India and
-      Ditchley Foundation.</p>
-
-    <div class="skills-block">
-      <div class="block-label">Skills</div>
-      <div class="skills-group">
-        <div class="skills-sub">Languages</div>
-        <div class="tag-row">
-          <span class="tag">English — fluent</span>
-          <span class="tag">Hindi — fluent</span>
+<header class="hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <img class="avatar" src="assets/profile.jpg" alt="Maan Mittal">
+      <h1 class="name">Hello, I'm Maan!</h1>
+      <div class="meta-lines">
+        <div class="meta-line">
+          <svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+          Economics and Data Analytics, University of Manchester
         </div>
-      </div>
-      <div class="skills-group">
-        <div class="skills-sub">Tools</div>
-        <div class="tag-row">
-          <span class="tag">R</span><span class="tag">Python</span><span class="tag">SQL / MySQL</span>
-          <span class="tag">Tableau</span><span class="tag">Neo4j / Cypher</span><span class="tag">Excel</span>
-          <span class="tag">PowerPoint</span><span class="tag">Figma</span><span class="tag">Miro</span>
-          <span class="tag">Canva</span><span class="tag">GitHub</span>
+        <div class="meta-line">
+          <svg viewBox="0 0 24 24"><path d="M20 10c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.8"/></svg>
+          Manchester, UK
         </div>
       </div>
     </div>
-
-    <div class="contact-block">
-      <div class="block-label">Contact</div>
-      <div class="tag-row">
-        <a class="contact-pill" href="mailto:maanmittal04@gmail.com">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7 10-7"/></svg>
-          Email
+    <div class="hero-right">
+      <p class="tagline">Always tinkering with systems and products that could work better. And
+        endlessly curious about why people do what they do and what the numbers have to say
+        about it. Take a look at a few of the projects below, and say hi if something catches
+        your eye.</p>
+      <div class="pill-row">
+        <a class="pill-btn pill-outline" href="mailto:maanmittal04@gmail.com">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7 10-7"/></svg>
+          Email me
         </a>
-        <a class="contact-pill" href="https://www.linkedin.com/in/maanmittal" target="_blank" rel="noopener">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 21v-7a3 3 0 0 1 6 0v7M10 9v12"/></svg>
+        <a class="pill-btn pill-solid" href="https://www.linkedin.com/in/maanmittal" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 21v-7a3 3 0 0 1 6 0v7M10 9v12"/></svg>
           LinkedIn
         </a>
       </div>
     </div>
-  </section>
+  </div>
+</header>
 
-  <section class="panel" id="panel-projects">
-    <div class="projects-head">
-      <div class="block-label" style="margin-bottom:0">Selected work</div>
-      <a class="gh-corner" href="https://github.com/Mmittal04" target="_blank" rel="noopener">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.4 9.4 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .26.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-        github.com/Mmittal04
-      </a>
-    </div>
+<main>
+  <div class="main-inner">
 
-    <div class="project-card">
-      <p class="project-title">Analysing Movie Ratings</p>
-      <p class="project-stack">R · web scraping</p>
-      <p class="project-desc">An introductory project scraping and analysing movie rating data, built
-        for a SOSS peer workshop on R and web-scraping fundamentals.</p>
-      <div class="project-links">
-        <a href="https://github.com/Mmittal04/MyPortfolio/tree/main/01-analysing-movie-ratings" target="_blank" rel="noopener">Source on GitHub →</a>
+    <section class="panel active" id="panel-about">
+      <div class="about-block band-row">
+        <div class="band-label">
+          <div class="band-rule"></div>
+          <div class="band-kicker">About</div>
+        </div>
+        <p class="band-copy">I'm a third-year Economics and Data Analytics student at the University
+          of Manchester. Most of my work sits at the intersection of research and strategy. Outside
+          coursework, I help run my university's open-data and reproducibility community, and I
+          build interesting projects to keep learning by shipping something real. Previously
+          interned at Pratham India and Ditchley Foundation.</p>
       </div>
-    </div>
 
-    <div class="project-card">
-      <p class="project-title">Weekly Digest Viewer</p>
-      <p class="project-stack">Python · GitHub Actions · Gemini API · JavaScript</p>
-      <p class="project-desc">An automated pipeline that ingests RSS feeds across three topics every
-        week, ranks and summarises the coverage with the Gemini API, and publishes the results as a
-        live, tabbed reader site.</p>
-      <div class="project-links">
-        <a href="02-weekly-digest-pipeline/Weekly%20Digest%20Viewer/site/">View live site →</a>
-        <a href="https://github.com/Mmittal04/MyPortfolio/tree/main/02-weekly-digest-pipeline" target="_blank" rel="noopener">Source on GitHub →</a>
+      <div class="about-block band-row">
+        <div class="band-label">
+          <div class="band-rule"></div>
+          <div class="band-kicker">Skills</div>
+        </div>
+        <div class="skills-groups">
+          <div>
+            <div class="skills-heading">Languages</div>
+            <div class="tag-row">
+              <span class="tag">English — fluent</span>
+              <span class="tag">Hindi — fluent</span>
+            </div>
+          </div>
+          <div>
+            <div class="skills-heading">Tools</div>
+            <div class="tag-row">
+              <span class="tag">R</span><span class="tag">Python</span><span class="tag">SQL / MySQL</span>
+              <span class="tag">Tableau</span><span class="tag">Neo4j / Cypher</span><span class="tag">Excel</span>
+              <span class="tag">PowerPoint</span><span class="tag">Figma</span><span class="tag">Miro</span>
+              <span class="tag">Canva</span><span class="tag">GitHub</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="panel" id="panel-resume">
-    <a class="resume-download" href="assets/resume.pdf" download>
-      <svg class="icon" viewBox="0 0 24 24" stroke="white"><path d="M12 3v13m0 0 5-5m-5 5-5-5"/><path d="M4 20h16"/></svg>
-      Download résumé
-    </a>
-    <object class="resume-embed" data="assets/resume.pdf" type="application/pdf">
-      <p>Your browser can't display the résumé inline. <a href="assets/resume.pdf">Download it here.</a></p>
-    </object>
-  </section>
+    <section class="panel" id="panel-projects">
+      <div class="band-row">
+        <div class="band-label">
+          <div class="band-rule"></div>
+          <div class="band-kicker">Selected work</div>
+          <a class="gh-link" href="https://github.com/Mmittal04" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.4 9.4 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .26.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+            github.com/Mmittal04
+          </a>
+        </div>
 
+        <div>
+          <div class="project-entry">
+            <div class="project-badge">01</div>
+            <div class="project-body">
+              <h2 class="project-title">Analysing Movie Ratings</h2>
+              <div class="project-stack">R · web scraping</div>
+              <p class="project-desc">An introductory project scraping and analysing movie rating
+                data, built for a SOSS peer workshop on R and web-scraping fundamentals.</p>
+              <div class="project-links">
+                <a class="chip-btn" href="https://github.com/Mmittal04/MyPortfolio/tree/main/01-analysing-movie-ratings" target="_blank" rel="noopener">Source on GitHub →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-entry">
+            <div class="project-badge">02</div>
+            <div class="project-body">
+              <h2 class="project-title">Weekly Digest Viewer</h2>
+              <div class="project-stack">Python · GitHub Actions · Gemini API · JavaScript</div>
+              <p class="project-desc">An automated pipeline that ingests RSS feeds across three
+                topics every week, ranks and summarises the coverage with the Gemini API, and
+                publishes the results as a live, tabbed reader site.</p>
+              <div class="project-links">
+                <a class="chip-btn outline" href="02-weekly-digest-pipeline/Weekly%20Digest%20Viewer/site/">View live site →</a>
+                <a class="chip-btn" href="https://github.com/Mmittal04/MyPortfolio/tree/main/02-weekly-digest-pipeline" target="_blank" rel="noopener">Source on GitHub →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-resume">
+      <div class="band-row">
+        <div class="band-label">
+          <div class="band-rule"></div>
+          <div class="band-kicker">Resume</div>
+        </div>
+        <div class="resume-col">
+          <a class="pill-btn pill-outline" style="align-self:flex-start" href="assets/resume.pdf" download>
+            <svg viewBox="0 0 24 24"><path d="M12 3v13m0 0 5-5m-5 5-5-5"/><path d="M4 20h16"/></svg>
+            Download résumé
+          </a>
+          <div class="resume-frame">
+            <object class="resume-embed" data="assets/resume.pdf" type="application/pdf">
+              <p style="margin:0;padding:40px;text-align:center;color:var(--ink-700)">Your browser
+                can't display the résumé inline. <a href="assets/resume.pdf" style="color:var(--aink);text-decoration:underline">Download it here.</a></p>
+            </object>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
 </main>
 
+<footer>
+  <div class="footer-inner">
+    <span>Maan Mittal — Manchester, UK</span>
+    <span>github.com/Mmittal04</span>
+  </div>
+</footer>
+
 <script>
-  const tabs = document.querySelectorAll('nav.tabs button');
+  const tabs = document.querySelectorAll('nav.pillbar button');
   const panels = { about: document.getElementById('panel-about'),
                     projects: document.getElementById('panel-projects'),
                     resume: document.getElementById('panel-resume') };

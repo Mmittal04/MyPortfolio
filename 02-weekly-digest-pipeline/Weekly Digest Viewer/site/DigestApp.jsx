@@ -48,6 +48,17 @@ function DigestApp(){
 
   return (
     <div style={{minHeight:'100vh',background:'var(--surface-page)'}}>
+      <div style={{position:'sticky',top:0,zIndex:20,display:'flex',alignItems:'center',justifyContent:'space-between',
+        padding:'var(--space-5) var(--layout-gutter)',background:'linear-gradient(var(--surface-page) 62%, transparent)'}}>
+        <a href="../../../index.html#panel-projects" style={{display:'inline-flex',alignItems:'center',gap:'8px',
+          font:'var(--type-ui)',fontSize:'var(--text-xs)',color:'var(--text-secondary)',padding:'8px 16px',
+          border:'1px solid var(--border-hairline)',borderRadius:'var(--radius-pill)',background:'var(--surface-card)',
+          boxShadow:'var(--shadow-card)',textDecoration:'none'}}>
+          <i data-lucide="arrow-left" style={{width:14,height:14}}></i>
+          Back to portfolio
+        </a>
+        <span style={{font:'var(--type-ui)',fontWeight:600,fontSize:'var(--text-xs)',letterSpacing:'.04em',color:'var(--text-secondary)'}}>MM</span>
+      </div>
       <SiteHeader
         right={<div style={{display:'flex',gap:'var(--space-2)',alignItems:'center'}}>
           <Button variant="ghost" size="sm" onClick={refresh} iconLeft={<i data-lucide="rotate-cw" style={{width:14,height:14}}></i>}>Refresh</Button>

@@ -274,19 +274,6 @@
           <div class="project-entry">
             <div class="project-badge">01</div>
             <div class="project-body">
-              <h2 class="project-title">Analysing Movie Ratings</h2>
-              <div class="project-stack">R · web scraping</div>
-              <p class="project-desc">An introductory project scraping and analysing movie rating
-                data, built for a SOSS peer workshop on R and web-scraping fundamentals.</p>
-              <div class="project-links">
-                <a class="chip-btn" href="https://github.com/Mmittal04/MyPortfolio/tree/main/01-analysing-movie-ratings" target="_blank" rel="noopener">Source on GitHub →</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="project-entry">
-            <div class="project-badge">02</div>
-            <div class="project-body">
               <h2 class="project-title">Weekly Digest Viewer</h2>
               <div class="project-stack">Python · GitHub Actions · Gemini API · JavaScript</div>
               <p class="project-desc">An automated pipeline that ingests RSS feeds across three
@@ -295,6 +282,47 @@
               <div class="project-links">
                 <a class="chip-btn outline" href="02-weekly-digest-pipeline/Weekly%20Digest%20Viewer/site/">View live site →</a>
                 <a class="chip-btn" href="https://github.com/Mmittal04/MyPortfolio/tree/main/02-weekly-digest-pipeline" target="_blank" rel="noopener">Source on GitHub →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-entry">
+            <div class="project-badge">02</div>
+            <div class="project-body">
+              <h2 class="project-title">Temu UX Audit</h2>
+              <div class="project-stack">Figma · Heuristic Evaluation · UX Research</div>
+              <p class="project-desc">A heuristic evaluation of Temu's e-commerce experience —
+                mapping usability strengths and friction points across discovery, browsing, and
+                checkout.</p>
+              <div class="project-links">
+                <a class="chip-btn outline" href="temu-ux-audit.html">View case study →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-entry">
+            <div class="project-badge">03</div>
+            <div class="project-body">
+              <h2 class="project-title">Caemba Youth: Branding and Communication Strategy</h2>
+              <div class="project-stack">Brand Strategy · Visual Identity · Consulting</div>
+              <p class="project-desc">Brand and communication strategy for a youth-led nonprofit
+                in Quito, Ecuador — a visual identity system and guidelines that clarified their
+                mission for donors and young supporters.</p>
+              <div class="project-links">
+                <a class="chip-btn outline" href="caemba-youth.html">View case study →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-entry">
+            <div class="project-badge">04</div>
+            <div class="project-body">
+              <h2 class="project-title">Analysing Movie Ratings</h2>
+              <div class="project-stack">R · web scraping</div>
+              <p class="project-desc">An introductory project scraping and analysing movie rating
+                data, built for a SOSS peer workshop on R and web-scraping fundamentals.</p>
+              <div class="project-links">
+                <a class="chip-btn" href="https://github.com/Mmittal04/MyPortfolio/tree/main/01-analysing-movie-ratings" target="_blank" rel="noopener">Source on GitHub →</a>
               </div>
             </div>
           </div>
@@ -338,12 +366,16 @@
   const panels = { about: document.getElementById('panel-about'),
                     projects: document.getElementById('panel-projects'),
                     resume: document.getElementById('panel-resume') };
+  function activateTab(key) {
+    if (!panels[key]) return;
+    tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === key)));
+    Object.entries(panels).forEach(([k, el]) => el.classList.toggle('active', k === key));
+  }
   tabs.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      tabs.forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
-      Object.entries(panels).forEach(([key, el]) => el.classList.toggle('active', key === btn.dataset.tab));
-    });
+    btn.addEventListener('click', () => activateTab(btn.dataset.tab));
   });
+  const initialTab = location.hash.replace('#panel-', '');
+  if (initialTab) activateTab(initialTab);
 </script>
 
 </body>

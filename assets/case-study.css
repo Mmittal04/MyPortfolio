@@ -1,0 +1,146 @@
+/* Shared styling for project case-study pages (Caemba Youth, Temu UX Audit).
+   Deliberately parallel to the Weekly Digest Viewer's design language
+   (Literata + Archivo, sand neutrals, rounded pills/cards) rather than the
+   root portfolio's "Classical" system -- same warm & simple family, a
+   different accent (teal instead of clay) and a different typographic
+   voice, so these read as case studies rather than the landing page. */
+:root{
+  --ink:#1C1913;
+  --ink-700:#6A5F50;
+  --ink-800:#4A4237;
+  --ink-900:#2F2A22;
+  --bg:#FCF9F4;
+  --band:#F6F1E8;
+  --rule:rgba(28,25,19,.08);
+  --card:#FFFDFA;
+  --label:#2E6B63;
+  --line:#2E6B63;
+  --tint:#DCEBE8;
+  --aink:#1E4B45;
+  --footbg:#1C1913;
+  --footink:#DED3C2;
+  --font-heading:'Literata',Georgia,serif;
+  --font-body:'Literata',Georgia,serif;
+  --font-ui:'Archivo','Helvetica Neue',Helvetica,sans-serif;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --shadow-card:0 1px 2px rgba(74,66,55,.06),0 2px 8px rgba(74,66,55,.05);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+}
+a{color:var(--ink);text-decoration:none}
+a:hover{color:var(--aink)}
+:focus-visible{outline:2px solid var(--line);outline-offset:2px}
+
+/* ---------- top bar ---------- */
+nav.topbar{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:20px 40px;background:linear-gradient(var(--bg) 62%, transparent);
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--font-ui);
+  font-size:.88rem;font-weight:500;color:var(--ink-700);padding:8px 16px;
+  border:1px solid var(--rule);border-radius:999px;background:var(--card);
+  box-shadow:var(--shadow-card);transition:border-color .15s,color .15s;
+}
+.back-link:hover{border-color:var(--line);color:var(--aink)}
+.back-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+.topbar-mark{font-family:var(--font-ui);font-weight:600;font-size:.82rem;letter-spacing:.04em;color:var(--ink-700)}
+
+/* ---------- hero ---------- */
+header.case-hero{max-width:920px;margin:0 auto;padding:36px 40px 8px}
+.case-kicker{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--font-ui);
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--label);
+}
+h1.case-title{
+  margin:18px 0 0;font-family:var(--font-heading);font-weight:600;
+  font-size:clamp(2.2rem,4.6vw,3.4rem);line-height:1.08;letter-spacing:-.01em;color:var(--ink);
+}
+p.case-dek{
+  margin:20px 0 0;max-width:66ch;font-size:1.12rem;line-height:1.65;color:var(--ink-800);
+}
+.case-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.meta-chip{
+  padding:7px 14px;border:1px solid var(--rule);border-radius:var(--radius-md);
+  background:var(--card);font-family:var(--font-ui);font-size:.8rem;color:var(--ink-700);
+}
+
+/* ---------- explore tab ---------- */
+.explore-row{max-width:920px;margin:0 auto;padding:28px 40px 0}
+.explore-tab{
+  appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-ui);font-size:.92rem;font-weight:500;
+  padding:11px 22px;border-radius:999px;border:1px solid var(--ink);
+  background:var(--ink);color:var(--bg);transition:opacity .15s;
+}
+.explore-tab:hover{opacity:.85}
+.explore-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ---------- content ---------- */
+main.case-main{border-top:1px solid var(--rule);background:var(--band);margin-top:36px}
+.case-inner{max-width:920px;margin:0 auto;padding:64px 40px 100px;display:flex;flex-direction:column;gap:60px}
+
+section.case-section{display:flex;flex-direction:column;gap:20px}
+.section-label{
+  display:flex;align-items:center;gap:10px;font-family:var(--font-ui);
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--label);
+}
+.section-rule{width:22px;height:1px;background:var(--line)}
+h2.section-title{margin:0;font-family:var(--font-heading);font-weight:600;font-size:1.6rem;line-height:1.2;color:var(--ink)}
+h3.subsection-title{margin:8px 0 0;font-family:var(--font-heading);font-weight:600;font-style:italic;font-size:1.2rem;color:var(--ink)}
+
+p.case-copy{margin:0;font-size:1.05rem;line-height:1.75;color:var(--ink-800)}
+p.case-copy strong{color:var(--ink)}
+blockquote.case-quote{
+  margin:4px 0;padding:18px 24px;border-left:2px solid var(--line);
+  background:var(--card);border-radius:0 var(--radius-md) var(--radius-md) 0;
+  font-family:var(--font-heading);font-style:italic;font-size:1.12rem;line-height:1.6;color:var(--ink-900);
+}
+
+ol.case-list,ul.case-list{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.case-list li{font-size:1.02rem;line-height:1.65;color:var(--ink-800)}
+.case-list li strong{color:var(--ink)}
+
+.meta-card{
+  display:flex;flex-direction:column;gap:10px;padding:22px 26px;
+  border:1px solid var(--rule);border-radius:var(--radius-lg);background:var(--card);
+  box-shadow:var(--shadow-card);
+}
+.meta-row{display:flex;gap:8px;font-size:.95rem;line-height:1.5}
+.meta-row .k{font-family:var(--font-ui);font-weight:600;color:var(--ink);min-width:150px;flex:none}
+.meta-row .v{color:var(--ink-800)}
+
+figure.case-figure{margin:0;display:flex;flex-direction:column;gap:10px}
+figure.case-figure img{
+  display:block;width:100%;height:auto;border:1px solid var(--rule);
+  border-radius:var(--radius-lg);background:var(--card);box-shadow:var(--shadow-card);
+}
+figure.case-figure figcaption{font-family:var(--font-ui);font-size:.84rem;color:var(--ink-700)}
+.figure-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+.embed-frame{
+  border:1px solid var(--rule);border-radius:var(--radius-lg);background:var(--card);
+  box-shadow:var(--shadow-card);padding:8px;
+}
+.embed-frame iframe{display:block;width:100%;height:600px;border:0;border-radius:var(--radius-md)}
+.embed-note{font-family:var(--font-ui);font-size:.82rem;color:var(--ink-700)}
+
+/* ---------- footer ---------- */
+footer.case-foot{border-top:1px solid var(--rule);background:var(--footbg)}
+.case-foot-inner{
+  max-width:920px;margin:0 auto;padding:34px 40px;
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-family:var(--font-ui);font-size:.82rem;color:var(--footink);
+}
+
+@media (max-width:720px){
+  nav.topbar,header.case-hero,.explore-row,.case-inner,.case-foot-inner{padding-left:20px;padding-right:20px}
+  .figure-row{grid-template-columns:1fr}
+  .meta-row{flex-direction:column;gap:2px}
+  .meta-row .k{min-width:0}
+  .embed-frame iframe{height:420px}
+}
